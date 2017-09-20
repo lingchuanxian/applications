@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.fjlcx.application.mapper.MenuMapper">
+  <resultMap id="BaseResultMap" type="cn.fjlcx.application.bean.Menu">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="mu_id" jdbcType="INTEGER" property="muId" />
+    <result column="mu_text" jdbcType="VARCHAR" property="muText" />
+    <result column="mu_state" jdbcType="VARCHAR" property="muState" />
+    <result column="mu_iconCls" jdbcType="VARCHAR" property="muIconcls" />
+    <result column="mu_url" jdbcType="VARCHAR" property="muUrl" />
+    <result column="mu_pid" jdbcType="INTEGER" property="muPid" />
+    <result column="mu_checked" jdbcType="INTEGER" property="muChecked" />
+    <result column="mu_order" jdbcType="INTEGER" property="muOrder" />
+  </resultMap>
+  
+  <select id="selectAllOfMenu" resultMap="BaseResultMap">
+  	select * from oa_menu order by mu_order desc
+  </select>
+  
+  <delete id="deleteMenuById" parameterType="int">
+  	delete from oa_menu where mu_id = #{id}
+  </delete>
+  
+  <select id="selectMenuById" parameterType="int" resultMap="BaseResultMap">
+  	select * from oa_menu where mu_id = #{id} 
+  </select>
+  
+   <select id="selectMenuByPid" parameterType="int" resultMap="BaseResultMap">
+  	select * from oa_menu where mu_pid = #{pid}
+  </select>
+  
+  <update id="updateMenuOrder" parameterType="int">
+  	update oa_menu set mu_order = #{order} where mu_id = #{id}
+  </update>
+</mapper>

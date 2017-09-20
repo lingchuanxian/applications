@@ -1,0 +1,79 @@
+body { font:12px/1.2em Microsoft YaHei;}
+
+a,
+a:link { color:#000; text-decoration:none; outline:none;}
+a:hover,
+a:focus { text-decoration:none; color:#39f;}
+
+select,
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"],
+input[type="radio"],
+input[type="checkbox"] { cursor: pointer;}
+
+.footer { height:20px; padding:5px; text-align:center; overflow:hidden; background:#e0ecff;}
+.header { height:55px; position:relative; z-index:0; overflow:hidden; border-bottom:1px #95b8e7 solid; background:url(../images/bg_header.jpg) bottom repeat-x;}
+.header-left{float: left;}
+.nav-tab{display:block;text-decoration: none;color: #000000;padding-left: 5px;}
+.head-menu{float: right;}
+.head-menu li{float: left;list-style: none;margin-right: 5px;color: #ffffff;font-size: 14px;}
+.head-menu li a{color: #ffffff;text-decoration: none;}
+.head-menu li a:hover{text-decoration: underline;}
+.header-right { position:absolute; z-index:1; right:5px; top:0; color:#fff; text-align:right;}
+.header-right p { line-height:0.7em;}
+.header-right a { color:#fff; margin:0 5px;}
+.tree-node { padding:2px 0px; }
+.tree-node-selected { padding:2px 0; border:1px #e8edf3 solid;}
+
+#login{
+	margin:0 auto;
+	padding:15px 0 0 0;
+}
+#login p{
+	height:26px;
+	line-height:26px;
+	text-align:center;
+}
+.textboxp{
+	padding:4px 6px;
+}
+#btn{
+	text-align:center;
+}
+#btn a{
+	padding:0 5px; 
+}
+.textboxr{
+	border-radius:6px;
+}
+#dtm form,#dfm form,#dm-edt form{
+	margin:0 40px;
+}
+#dtm form .easyui-combobox,#dfm form .easyui-combobox,#dm-edt form .easyui-combobox{
+	width:180px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
