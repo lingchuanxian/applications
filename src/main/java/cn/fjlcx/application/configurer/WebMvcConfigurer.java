@@ -4,12 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
-import com.google.code.kaptcha.impl.DefaultKaptcha;
-import com.google.code.kaptcha.util.Config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -163,14 +160,16 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry){
-        //registry.addViewController("/").setViewName("forward:/login");
+        registry.addViewController("/login.html").setViewName("/login_admin");
+        registry.addViewController("/index.html").setViewName("/index");
+        registry.addViewController("/menu/list").setViewName("/menu/list");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-      /*  registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-*/
+    	registry.addResourceHandler("/**")
+        .addResourceLocations("classpath:/static/");
+
     }
 
     private void responseResult(HttpServletResponse response, Result result) {

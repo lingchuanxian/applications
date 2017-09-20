@@ -62,7 +62,8 @@ public class CodeGenerator {
     private static final String DATE = new SimpleDateFormat("yyyy/MM/dd").format(new Date());//@date
 
     public static void main(String[] args) {
-        genCode("oa_user");
+        genCode("oa_menu","Menu");
+        //genCode("oa_user","User");
         //genCode("输入表名","输入自定义Model名称");
     }
 
@@ -144,15 +145,15 @@ public class CodeGenerator {
             generator = new MyBatisGenerator(config, callback, warnings);
             generator.generate(null);
         } catch (Exception e) {
-            throw new RuntimeException("生成Model和Mapper失败", e);
+            throw new RuntimeException("生成Bean和Dao失败", e);
         }
 
         if (generator.getGeneratedJavaFiles().isEmpty() || generator.getGeneratedXmlFiles().isEmpty()) {
-            throw new RuntimeException("生成Model和Mapper失败：" + warnings);
+            throw new RuntimeException("生成Bean和Dao失败：" + warnings);
         }
         if (StringUtils.isEmpty(modelName)) modelName = tableNameConvertUpperCamel(tableName);
         System.out.println(modelName + ".java 生成成功");
-        System.out.println(modelName + "Mapper.java 生成成功");
+        System.out.println(modelName + "Dao.java 生成成功");
         System.out.println(modelName + "Mapper.xml 生成成功");
     }
 
@@ -201,16 +202,15 @@ public class CodeGenerator {
             data.put("modelNameLowerCamel", CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, modelNameUpperCamel));
             data.put("basePackage", BASE_PACKAGE);
 
-            File file = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_CONTROLLER + modelNameUpperCamel + "Interface.java");
+            File file = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_CONTROLLER + modelNameUpperCamel + "Controller.java");
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
             }
-            //cfg.getTemplate("api-restful.ftl").process(data, new FileWriter(file));
-            cfg.getTemplate("api.ftl").process(data, new FileWriter(file));
+            cfg.getTemplate("controller.ftl").process(data, new FileWriter(file));
 
-            System.out.println(modelNameUpperCamel + "Interface.java 生成成功");
+            System.out.println(modelNameUpperCamel + "Controller.java 生成成功");
         } catch (Exception e) {
-            throw new RuntimeException("生成Interface失败", e);
+            throw new RuntimeException("生成Controller失败", e);
         }
 
     }

@@ -42,7 +42,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		UsernamePasswordToken token = (UsernamePasswordToken)authenticationToken;
 		logger.info("登录认证!");
 		logger.info("验证当前Subject时获取到token为：" + ReflectionToStringBuilder.toString(token, ToStringStyle.MULTI_LINE_STYLE));
-		User user = mUserService.findBy("usLoginname", token.getUsername());
+		User user = mUserService.selectUserWithRole(token.getUsername());
 		if (user != null){
 			logger.info("用户: " + user.getUsLoginname());
 			if(user.getUsState() == 1){
@@ -71,7 +71,7 @@ public class ShiroRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		String username = (String) super.getAvailablePrincipal(principals);
-		User user = mUserService.findBy("usLoginname", username);
+		User user = mUserService.selectUserWithRole(username);
 		logger.info("权限认证!");
 		if (user != null){
 			// 权限信息对象info，用来存放查出的用户的所有的角色及权限

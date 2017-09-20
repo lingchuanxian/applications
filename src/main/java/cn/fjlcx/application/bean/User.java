@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name = "oa_user")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "us_id")
     private Integer usId;
 
@@ -52,7 +53,8 @@ public class User {
 
     @Column(name = "us_lastlogindate")
     private Date usLastlogindate;
-
+    
+    @Transient
     private String role;
 
     public String getRole() {
@@ -261,7 +263,31 @@ public class User {
         this.usLastlogindate = usLastlogindate;
     }
 
-    @Override
+    public User() {
+		super();
+	}
+
+	public User(Integer usId, String usLoginname, String usPwd, Integer usRole, String usHead, String usName,
+			Integer usSex, String usPhone, String usMail, String usAddress, Integer usState, Date usRegistdate,
+			Date usLastlogindate, String role) {
+		super();
+		this.usId = usId;
+		this.usLoginname = usLoginname;
+		this.usPwd = usPwd;
+		this.usRole = usRole;
+		this.usHead = usHead;
+		this.usName = usName;
+		this.usSex = usSex;
+		this.usPhone = usPhone;
+		this.usMail = usMail;
+		this.usAddress = usAddress;
+		this.usState = usState;
+		this.usRegistdate = usRegistdate;
+		this.usLastlogindate = usLastlogindate;
+		this.role = role;
+	}
+
+	@Override
     public String toString() {
         return "OaUser{" +
                 "usId=" + usId +
