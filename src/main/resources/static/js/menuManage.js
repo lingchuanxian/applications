@@ -191,17 +191,13 @@ $(function(){
 				handler:function(){
 					MoveDown(datagrid);
 				}
-			},
-			{
-				text:'移动到',
-				iconCls:'icon-arrow-right',
-				handler:function(){
-
-				}
 			}],
-			onLoadSuccess: function(row){
+			onBeforeLoad:function(){
+				MaskUtil.mask();
 				$("#save").hide();
 				$("#cancle").hide();
+			},
+			onLoadSuccess: function(row){
 				MaskUtil.unmask();
 				datagrid.datagrid("unselectAll");
 			},

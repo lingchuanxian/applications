@@ -1,25 +1,58 @@
 $(function(){
-	$('#tt').tree({
-		method : 'POST',
-		url : 'menu/GetMenuList',
-		animate:true,
-		loadFilter: function(data){
-			if (data.code == 200){
-				return data.data;
-			}else{
-				alert(data.message);
-			}
-		},
-		error : function() {
-			alert('系统异常，请稍候再试');
-		},
-		onClick: function(node){
-			if($('#tt').tree('isLeaf',node.target)){  
-				addTab(node.text,node.url,node.iconCls);
-			}
-		}
-	});
 
+	$.ajax({  
+		type : 'POST',  
+		dataType : "json",  
+		url : 'menu/GetMenuParent',  
+		data:{
+			"id":0
+		},
+		beforeSend: function () {
+			MaskUtil.mask();
+	    },
+	    complete: function () {
+	    	MaskUtil.unmask();
+	    },
+		success : function(data) {  
+			$.each(data.data, function(i, item) {//加载父类节点即一级菜单  
+				console.log(data);
+				var id = item.muId;
+				var title = item.muText;
+				$('#layout_west_accordion').accordion('add', {  
+					title : item.muText,  
+					iconCls : item.muIconcls,  
+					selected : item.muChecked,  
+					content : '<div style="margin-top:8px;"><ul id="tree'+item.muId+'" name="'+item.text+'"></ul></div>',  
+				});  
+				getChild(id,title);
+			});  
+		}  
+	});  
+
+	function getChild(id,title){
+		$("#tree"+id).tree({
+			method : 'GET',
+			url : 'menu/GetMainMenuChildren?id='+id,
+			animate:true,
+			loadFilter: function(data){
+				console.log("child:"+data);
+				if (data.code == 200){
+					return data.data;
+				}else{
+					alert(data.message);
+				}
+			},
+			error : function() {
+				alert('系统异常，请稍候再试');
+			},
+			onClick: function(node){
+				if($("#tree"+id).tree('isLeaf',node.target)){  
+					addTab(node.text,node.url,node.iconCls);
+				}
+			}
+		});
+	}
+	
 	function addTab(title, url,iconCls){
 		if ($('#tabs').tabs('exists', title)){
 			$('#tabs').tabs('select', title);//选中并刷新

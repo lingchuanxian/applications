@@ -102,7 +102,7 @@ public class TreeJson {
         return treelist ;  
     }  
   
-    private static void getChildrenNodes(List<TreeJson> nodes, TreeJson root) {  
+    public static void getChildrenNodes(List<TreeJson> nodes, TreeJson root) {  
         for (TreeJson treeJson : nodes) {  
              //在根节点中下寻找它的子节点  
            if(treeJson.getPid() == root.getId()){//如果找到root的子结点  
