@@ -8,7 +8,7 @@ public class TreeJson {
 	private int id;
 	private String text;
 	private String state;
-	private String checked;
+	private Boolean checked;
 	private String url;
 	private String iconCls;
 	private int pid;
@@ -50,10 +50,10 @@ public class TreeJson {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public String getChecked() {
+	public Boolean getChecked() {
 		return checked;
 	}
-	public void setChecked(String checked) {
+	public void setChecked(Boolean checked) {
 		this.checked = checked;
 	}
 	public List<TreeJson> getChildren() {
@@ -68,7 +68,7 @@ public class TreeJson {
 	public void setPid(int pid) {
 		this.pid = pid;
 	}
-	public TreeJson(int id, String text, String state, String checked,int pid,List<TreeJson> children) {
+	public TreeJson(int id, String text, String state, Boolean checked,int pid,List<TreeJson> children) {
 		super();
 		this.id = id;
 		this.text = text;

@@ -11,12 +11,12 @@
     <result column="mu_iconCls" jdbcType="VARCHAR" property="muIconcls" />
     <result column="mu_url" jdbcType="VARCHAR" property="muUrl" />
     <result column="mu_pid" jdbcType="INTEGER" property="muPid" />
-    <result column="mu_checked" jdbcType="INTEGER" property="muChecked" />
+    <result column="mu_checked" jdbcType="BOOLEAN" property="muChecked" />
     <result column="mu_order" jdbcType="INTEGER" property="muOrder" />
   </resultMap>
   
   <select id="selectAllOfMenu" resultMap="BaseResultMap">
-  	select * from oa_menu order by mu_order desc
+  	select * from oa_menu order by mu_order asc
   </select>
   
   <delete id="deleteMenuById" parameterType="int">
@@ -28,10 +28,13 @@
   </select>
   
    <select id="selectMenuByPid" parameterType="int" resultMap="BaseResultMap">
-  	select * from oa_menu where mu_pid = #{pid}
+  	select * from oa_menu where mu_pid = #{pid} order by mu_order asc
   </select>
   
   <update id="updateMenuOrder" parameterType="int">
   	update oa_menu set mu_order = #{order} where mu_id = #{id}
   </update>
+  <select id="selectMaxOrder" resultType="int">
+  	select max(mu_order) from oa_menu
+  </select>
 </mapper>

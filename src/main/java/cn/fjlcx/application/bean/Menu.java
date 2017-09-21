@@ -24,16 +24,16 @@ public class Menu {
     private Integer muPid;
     
     @Column(name = "mu_checked")
-    private String muChecked;
+    private Boolean muChecked;
     
     @Column(name = "mu_order")
     private Integer muOrder;
     
-    public String getMuChecked() {
+    public Boolean getMuChecked() {
 		return muChecked;
 	}
 
-	public void setMuChecked(String muChecked) {
+	public void setMuChecked(Boolean muChecked) {
 		this.muChecked = muChecked;
 	}
 

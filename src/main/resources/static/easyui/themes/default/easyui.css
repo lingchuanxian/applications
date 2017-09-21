@@ -1,3 +1,6 @@
+body{
+	font-size:16px;
+}
 .panel {
   overflow: hidden;
   text-align: left;
@@ -1719,7 +1722,7 @@
 }
 .datagrid-header-row,
 .datagrid-row {
-  height: 25px;
+  height: 35px!important;
 }
 .datagrid-header td,
 .datagrid-body td,
@@ -1822,7 +1825,7 @@
 }
 .datagrid-view .datagrid-editable-input {
   margin: 0;
-  padding: 2px 4px;
+  padding: 12px 4px;
   border: 1px solid #95B8E7;
   font-size: 12px;
   outline-style: none;

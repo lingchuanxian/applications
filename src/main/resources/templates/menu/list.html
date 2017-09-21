@@ -1,99 +1,15 @@
 <body class="easyui-layout" data-options="fit:false,scroll:'no'">
 	<div data-options="region:'west',split:true,title:'主菜单模块'"
 		style="width: 230px;">
-		<div class="easyui-accordion" data-options="fit:true,border:false">
-			
+		<div class="easyui-panel" style="height:100%;">
 			<ul id="tt" class="easyui-tree" style="padding-left:20px;">
 			</ul>
 		</div>
 	</div>
 	<div data-options="region:'center'">
-	<div id="p" class="easyui-panel" title="子菜单模块" data-options="fit:true,border:false">
-		<table id="FMenuManage" class="easyui-datagrid"></table>
-		<table id="SMenuManage" class="easyui-datagrid"></table>
-		</div>
+		<table id="FMenuManage"  class="easyui-datagrid" title="子菜单模块"></table>
 	</div>
 </body>
-<div id="dfm" class="easyui-dialog" closed="true"
-	style="padding: 5px; width: 400px; height: 300px; align-content: center;">
-	<form id="ffm" method="post">
-		<p>
-			<input type="hidden" name="muPid" class="muPid" value="0" /> 菜单名称：<input
-				type="text" class="easyui-validatebox textboxp textboxr"
-				name="muText" required="true" />
-		</p>
-		<p>
-			图&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标：<input type="text"
-				name="muIconcls" class="easyui-validatebox textboxp textboxr" />
-		</p>
-		<p>
-			菜单状态：<select class="easyui-combobox" name="muState">
-				<option value="open">open</option>
-				<option value="close">close</option>
-			</select>
-		</p>
-	</form>
-</div>
-
-<div id="dtm" class="easyui-dialog"
-	style="padding: 5px; width: 400px; height: 300px; align-content: center;"
-	closed="true">
-	<form id="ftm" method="post">
-		<p>
-			一级菜单：<font class="pMenuName"></font><input type="hidden" name="muPid"
-				class="muPid" value="0" />
-		</p>
-		<p>
-			菜单名称：<input type="text" class="easyui-validatebox textboxp textboxr"
-				name="muText" required="true" />
-		</p>
-		<p>
-			图&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标：<input type="text"
-				name="muIconcls" class="easyui-validatebox textboxp textboxr" />
-		</p>
-		<p>
-			菜单状态：<select class="easyui-combobox" name="muState">
-				<option value="open">open</option>
-				<option value="close">close</option>
-			</select>
-		</p>
-		<p>
-			请求地址：<input type="text" name="muUrl"
-				class="easyui-validatebox textboxp textboxr" required="true" />
-		</p>
-	</form>
-</div>
-<div id="dm-edt" class="easyui-dialog"
-	style="padding: 5px; width: 400px; height: 300px; align-content: center;"
-	closed="true">
-	<form id="fem" method="post">
-		<input type="hidden" name="muId" class="muId" /> <input type="hidden"
-			name="muPid" class="muPid" />
-		<p class="edt_parent">
-			一级菜单：<select class="easyui-combobox muPid-select" name="muPid"
-				data-options=" valueField: 'muId', textField: 'muText'">
-			</select>
-		</p>
-		<p class="edt_text">
-			菜单名称：<input type="text" class="easyui-validatebox textboxp textboxr"
-				name="muText" required="true" />
-		</p>
-		<p>
-			图&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标：<input type="text"
-				name="muIconcls" class="easyui-validatebox textboxp textboxr" />
-		</p>
-		<p>
-			菜单状态：<select class="easyui-combobox" name="muState">
-				<option value="open">open</option>
-				<option value="close">close</option>
-			</select>
-		</p>
-		<p class="edt-url">
-			请求地址：<input type="text" name="muUrl"
-				class="easyui-validatebox textboxp textboxr" required="true" />
-		</p>
-	</form>
-</div>
 <link rel="stylesheet" id="easyuiTheme" type="text/css"
 	th:href="@{/easyui/themes/default/easyui.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}" />

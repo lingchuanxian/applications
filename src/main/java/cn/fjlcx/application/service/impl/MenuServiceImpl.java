@@ -47,4 +47,9 @@ public class MenuServiceImpl extends AbstractService<Menu> implements MenuServic
 		return oaMenuMapper.updateMenuOrder(params);
 	}
 
+	@Override
+	public int selectMaxOrder() {
+		return oaMenuMapper.selectMaxOrder();
+	}
+
 }

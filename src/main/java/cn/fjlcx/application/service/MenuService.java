@@ -15,4 +15,5 @@ public interface MenuService extends Service<Menu> {
 	Menu selectMenuById(int id);
 	List<Menu> selectMenuByPid(int pid);
 	int updateMenuOrder(Map<String,Integer> params);
+	int selectMaxOrder();
 }

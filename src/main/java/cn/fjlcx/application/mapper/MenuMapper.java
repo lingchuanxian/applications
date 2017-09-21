@@ -12,4 +12,5 @@ public interface MenuMapper extends Mapper<Menu> {
 	Menu selectMenuById(int id);
 	List<Menu> selectMenuByPid(int pid);
 	int updateMenuOrder(Map<String,Integer> params);
+	int selectMaxOrder();
 }

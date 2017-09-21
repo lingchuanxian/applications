@@ -106,7 +106,12 @@ public class MenuController {
     @PostMapping("UpdateMenu")
     public Result UpdateMenu(@ModelAttribute Menu menu) {
     	logger.info("menu-edit:"+menu.toString());
-    	menuService.update(menu);
+    	if(menu.getMuId() == null) {
+    		menu.setMuOrder(menuService.selectMaxOrder()+1);
+    		menuService.save(menu);
+    	}else {
+    		menuService.update(menu);
+    	}
     	return ResultGenerator.genSuccessResult().setMessage("修改成功");
     }
     
@@ -124,38 +129,16 @@ public class MenuController {
     	return ResultGenerator.genSuccessResult().setMessage("修改成功");
     }
     
-    
-    public List<TreeJson> getMenuWithChildren() {
-    	List<TreeJson> menuJsonList = new ArrayList<>();
-    	List<Menu> menuList = menuService.selectAllOfMenu();
-    	for(Menu menu : menuList) {
-    		if(menu.getMuPid() == 0) {
-    			TreeJson menuJson = new TreeJson();
-    			menuJson.setId(menu.getMuId());
-    			menuJson.setText(menu.getMuText());
-    			menuJson.setState(menu.getMuState());
-    			menuJson.setChecked("false");
-    			menuJson.setUrl(menu.getMuUrl());
-    			menuJson.setIconCls(menu.getMuIconcls());
-    			menuJson.setPid(menu.getMuPid());
-    			List<TreeJson> ChildList = new ArrayList<>();
-    			for(Menu childMenu : menuList) {
-    				if(childMenu.getMuPid() == menu.getMuId()) {
-    					TreeJson childJson = new TreeJson();
-    					childJson.setId(childMenu.getMuId());
-    					childJson.setText(childMenu.getMuText());
-    					childJson.setState(childMenu.getMuState());
-    					childJson.setChecked("false");
-    					childJson.setUrl(childMenu.getMuUrl());
-    					childJson.setIconCls(childMenu.getMuIconcls());
-    					childJson.setPid(childMenu.getMuPid());
-    	    			ChildList.add(childJson);
-    				}
-    			}
-    			menuJson.setChildren(ChildList);
-    			menuJsonList.add(menuJson);
-    		}
-    	}
-    	return menuJsonList;
+    @PostMapping("ExchangeMenuPosition")
+    public Result ExchangeMenuPosition(@RequestParam int id1,@RequestParam int id2) {
+    	Menu menu1 = menuService.selectMenuById(id1);
+    	Menu menu2 = menuService.selectMenuById(id2);
+    	int order1 = menu1.getMuOrder();
+    	menu1.setMuOrder(menu2.getMuOrder());
+    	menu2.setMuOrder(order1);
+    	menuService.update(menu1);
+    	menuService.update(menu2);
+    	return ResultGenerator.genSuccessResult().setMessage("修改成功");
     }
+    
 }
