@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import cn.fjlcx.application.bean.SubmitPaging;
 import cn.fjlcx.application.bean.User;
 import cn.fjlcx.application.core.AbstractService;
 import cn.fjlcx.application.mapper.UserMapper;
@@ -19,7 +20,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 		return mUserMapper.selectUserWithRole(username);
 	}
 	@Override
-	public List<User> selectAllUser() {
-		return mUserMapper.selectAllUser();
+	public List<User> selectUserByConditions(SubmitPaging mSubmitPaging) {
+		return mUserMapper.selectUserByConditions(mSubmitPaging);
 	}
 }

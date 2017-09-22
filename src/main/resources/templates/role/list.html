@@ -9,16 +9,7 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body class="easyui-layout" data-options="fit:false,scroll:'no'">
-	<div data-options="region:'west',split:true,title:'主菜单模块'"
-		style="width: 230px;">
-		<div class="easyui-panel" style="height:100%;">
-			<ul id="tt" class="easyui-tree" style="padding-left:20px;">
-			</ul>
-		</div>
-	</div>
-	<div data-options="region:'center'">
-		<table id="FMenuManage"  class="easyui-datagrid" title="子菜单模块"></table>
-	</div>
+	<table id="role-tb"></table>
 </body>
 <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.cookie.js}"></script>
@@ -28,5 +19,5 @@
 <script type="text/javascript" th:src="@{/easyui/treegrid-dnd.js}"></script>
 <script type="text/javascript" th:src="@{/js/easyui-common.js}"></script>
 <script type="text/javascript" th:src="@{/js/loading.js}"></script>
-<script type="text/javascript" th:src="@{/js/menu-manage.js}"></script>
+<script type="text/javascript" th:src="@{/js/role-manage.js}"></script>
 </html>

@@ -4,7 +4,6 @@
 	<resultMap id="BaseResultMap" type="cn.fjlcx.application.bean.User">
 		<id column="us_id" jdbcType="INTEGER" property="usId" />
 		<result column="us_loginname" jdbcType="VARCHAR" property="usLoginname" />
-		<result column="us_pwd" jdbcType="VARCHAR" property="usPwd" />
 		<result column="us_role" jdbcType="INTEGER" property="usRole" />
 		<result column="us_head" jdbcType="VARCHAR" property="usHead" />
 		<result column="us_name" jdbcType="VARCHAR" property="usName" />
@@ -16,19 +15,32 @@
 		<result column="us_registdate" jdbcType="TIMESTAMP" property="usRegistdate" />
 		<result column="us_lastlogindate" jdbcType="TIMESTAMP"
 			property="usLastlogindate" />
-		<association property="role" column="us_role" select="getRole"></association>
+		<association column="us_role" javaType="cn.fjlcx.application.bean.Role" property="role" select="getRole"></association>
 	</resultMap>
+
+	<resultMap id="BaseRoleResultMap" type="cn.fjlcx.application.bean.Role">
+		<id column="rl_id" jdbcType="INTEGER" property="rlId" />
+		<result column="rl_code" jdbcType="VARCHAR" property="rlCode" />
+		<result column="rl_name" jdbcType="VARCHAR" property="rlName" />
+		<result column="rl_detail" jdbcType="VARCHAR" property="rlDetail" />
+		<result column="rl_order" jdbcType="INTEGER" property="rlOrder" />
+	</resultMap>
+
 
 	<select id="selectUserWithRole" parameterType="String"
 		resultMap="BaseResultMap">
 		select * from oa_user WHERE us_loginname = #{username}
 	</select>
 
-	<select id="getRole" parameterType="int" resultType="String">
-		SELECT rl_code FROM oa_role WHERE rl_id = #{us_role}
+	<select id="getRole" parameterType="int" resultMap="BaseRoleResultMap">
+		SELECT * FROM
+		oa_role WHERE rl_id = #{us_role}
 	</select>
-	
-	<select id="selectAllUser" resultMap="BaseResultMap">
-		select * from oa_user
+
+	<select id="selectUserByConditions" parameterType="cn.fjlcx.application.bean.SubmitPaging"
+		resultMap="BaseResultMap">
+		select
+		us_id,us_loginname,us_role,us_head,us_name,us_sex,us_phone,us_mail,us_address,us_state,us_registdate,us_lastlogindate
+		from oa_user
 	</select>
 </mapper>

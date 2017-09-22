@@ -15,7 +15,6 @@ $(function(){
 	    },
 		success : function(data) {  
 			$.each(data.data, function(i, item) {//加载父类节点即一级菜单  
-				console.log(data);
 				var id = item.muId;
 				var title = item.muText;
 				$('#layout_west_accordion').accordion('add', {  
@@ -35,7 +34,6 @@ $(function(){
 			url : 'menu/GetMainMenuChildren?id='+id,
 			animate:true,
 			loadFilter: function(data){
-				console.log("child:"+data);
 				if (data.code == 200){
 					return data.data;
 				}else{

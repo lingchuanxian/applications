@@ -4,7 +4,6 @@ $(function(){
 		url : '../menu/MagageMenuList',
 		animate:true,
 		loadFilter: function(data){
-			console.log(data);
 			if (data.code == 200){
 				return data.data;
 			}else{
@@ -32,7 +31,6 @@ $(function(){
 			method:"POST",
 			url:"GetMenuParent",
 			idField:'muId',
-			treeField:'muText', 
 			rownumbers: true,
 			checkOnSelect : true,  
 			striped: true, //行背景交换
@@ -41,11 +39,7 @@ $(function(){
 			queryParams: {          
 				id: nodeId            
 			},  
-			onBeforeLoad:function(){
-				MaskUtil.mask();
-			},
 			loadFilter: function(data){
-				console.log(data);
 				if (data.code == 200){
 					return data.data;
 				}else{
@@ -55,33 +49,39 @@ $(function(){
 			columns:[[{
 				field : 'ck',
 				title:'编号',
-				checkbox : true
+				checkbox : true,
+				align:'center',
 			},
 			{
 				field:'muId',
 				title:"菜单编号",
-				width:100,
+				width:20,
+				align:'center',
 			},{
 				field:'muText',
 				title:"菜单名称",
-				width:100,
+				width:40,
+				align:'center',
 				editor: { type: 'validatebox', options: { required: true} }
 			},{
 				field:'muIconcls',
 				title:"图标",
-				width:100,
+				width:40,
+				align:'center',
 				editor: { 
 					type: 'validatebox',
 				}
 			},{
 				field:'muUrl',
 				title:"请求地址",
-				width:100,
+				width:70,
+				align:'center',
 				editor: { type: 'validatebox'}
 			},{
 				field:'muState',
 				title:"状态",
-				width:100,
+				width:30,
+				align:'center',
 				editor:{//编辑选项  
 					type:'combobox',  
 					options:{
@@ -93,7 +93,8 @@ $(function(){
 			},{
 				field:'muChecked',
 				title:"是否选中",
-				width:100,
+				width:30,
+				align:'center',
 				editor:{//编辑选项  
 					type:'combobox',  
 					options:{
@@ -193,12 +194,10 @@ $(function(){
 				}
 			}],
 			onBeforeLoad:function(){
-				MaskUtil.mask();
 				$("#save").hide();
 				$("#cancle").hide();
 			},
 			onLoadSuccess: function(row){
-				MaskUtil.unmask();
 				datagrid.datagrid("unselectAll");
 			},
 			onBeforeEdit:function(index,row){
@@ -238,7 +237,6 @@ $(function(){
 	//上移
 	function MoveUp(datagrid) {
 		var row = datagrid.datagrid("getSelected");
-		console.log(row);
 		if (row != null) {
 			var index =datagrid.datagrid('getRowIndex', row);
 			mysort(index, 'up', datagrid);
@@ -297,7 +295,6 @@ $(function(){
 				"id2":position2,
 			},
 			success:function(data){
-				console.log(data);
 			},
 			error:function(){
 				alert(data.message);

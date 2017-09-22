@@ -55,13 +55,13 @@ public class User {
     private Date usLastlogindate;
     
     @Transient
-    private String role;
+    private Role role;
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -269,7 +269,7 @@ public class User {
 
 	public User(Integer usId, String usLoginname, String usPwd, Integer usRole, String usHead, String usName,
 			Integer usSex, String usPhone, String usMail, String usAddress, Integer usState, Date usRegistdate,
-			Date usLastlogindate, String role) {
+			Date usLastlogindate, Role role) {
 		super();
 		this.usId = usId;
 		this.usLoginname = usLoginname;

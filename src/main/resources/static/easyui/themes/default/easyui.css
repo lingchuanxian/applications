@@ -1,5 +1,5 @@
 body{
-	font-size:16px;
+	font-size:16px!important;
 }
 .panel {
   overflow: hidden;
@@ -1017,7 +1017,7 @@ body{
   color: #000000;
 }
 .combobox-item-selected {
-  background-color: #ffe48d;
+  background-color: #7cc5e5;
   color: #000000;
 }
 .combobox-icon {
@@ -1690,7 +1690,7 @@ body{
 }
 .datagrid-toolbar {
   height: auto;
-  padding: 1px 2px;
+  padding: 6px 2px;
   border-width: 0 0 1px 0;
   border-style: solid;
 }

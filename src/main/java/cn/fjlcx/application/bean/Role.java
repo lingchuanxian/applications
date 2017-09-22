@@ -14,18 +14,11 @@ public class Role {
     @Column(name = "rl_name")
     private String rlName;
 
-    /**
-     * @return rl_code
-     */
-    public String getRlCode() {
-        return rlCode;
-    }
-    /**
-     * @param rlCode
-     */
-    public void setRlCode(String rlCode) {
-        this.rlCode = rlCode;
-    }
+    @Column(name = "rl_detail")
+    private String rlDetail;
+
+    @Column(name = "rl_order")
+    private Integer rlOrder;
 
     /**
      * @return rl_id
@@ -42,6 +35,20 @@ public class Role {
     }
 
     /**
+     * @return rl_code
+     */
+    public String getRlCode() {
+        return rlCode;
+    }
+
+    /**
+     * @param rlCode
+     */
+    public void setRlCode(String rlCode) {
+        this.rlCode = rlCode;
+    }
+
+    /**
      * @return rl_name
      */
     public String getRlName() {
@@ -53,5 +60,33 @@ public class Role {
      */
     public void setRlName(String rlName) {
         this.rlName = rlName;
+    }
+
+    /**
+     * @return rl_detail
+     */
+    public String getRlDetail() {
+        return rlDetail;
+    }
+
+    /**
+     * @param rlDetail
+     */
+    public void setRlDetail(String rlDetail) {
+        this.rlDetail = rlDetail;
+    }
+
+    /**
+     * @return rl_order
+     */
+    public Integer getRlOrder() {
+        return rlOrder;
+    }
+
+    /**
+     * @param rlOrder
+     */
+    public void setRlOrder(Integer rlOrder) {
+        this.rlOrder = rlOrder;
     }
 }
