@@ -55,7 +55,27 @@ input[type="checkbox"] { cursor: pointer;}
 	width:180px;
 }
 
+#user-box{
+	text-align: center;
+}
+.rb-add-user{
+	margin:15px auto;
+	width:750px;
+	border-right:1px solid #c3c3c3;
+	border-bottom:1px solid #c3c3c3;
+}
+.rb-add-user td{
+	height:32px;
+	border-left:1px solid #c3c3c3;
+	border-top:1px solid #c3c3c3;
+}
 
+.rb-add-user .td_key{
+	background:#E0ECFF;
+}
+.rb-add-user .td_val{
+	background: #F4F4F4;
+}
 
 
 

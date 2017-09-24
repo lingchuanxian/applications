@@ -10,9 +10,42 @@
 </head>
 <body class="easyui-layout" data-options="fit:false,scroll:'no'">
 	<table id="user-tb"></table>
-	<div id="search">
-		<input id="sss" class="easyui-textbox" prompt="请输入查询内容"
-			style="width: 100px"></input>
+	<div id="user-box">
+		<table class="rb-add-user" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td class="td_key">用户名：</td>
+				<td class="td_val"><input class="easyui-validatebox" type="text" name="Name" /></td>
+				<td class="td_key">登陆账号：</td>
+				<td class="td_val"><input class="easyui-validatebox" type="text" name="Name" /></td>
+			</tr>
+			<tr>
+				<td class="td_key">密码：</td>
+				<td class="td_val"><input class="easyui-validatebox" type="password" name="Name" /></td>
+				<td class="td_key">重复密码：</td>
+				<td class="td_val"><input class="easyui-validatebox" type="password" name="Name" /></td>
+			</tr>
+			<tr>
+				<td class="td_key">角色：</td>
+				<td class="td_val">
+					<input class="easyui-combobox" id="role-combox" name="Name"/>
+				</td>
+				<td class="td_key">性别：</td>
+				<td class="td_val"><select class="easyui-combobox" style="width:170px;" editable="false">
+					<option value = "0">男</option>
+					<option value = "1">女</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td class="td_key">手机号：</td>
+				<td class="td_val"><input class="easyui-validatebox" type="password" name="Name" /></td>
+				<td class="td_key">邮箱：</td>
+				<td class="td_val"><input class="easyui-validatebox" type="password" name="Name" /></td>
+			</tr>
+			<tr>
+				<td class="td_key">联系地址：</td>
+				<td class="td_val" colspan="3"><input class="easyui-validatebox" type="password" name="Name" style="width:560px;"/></td>
+			</tr>
+		</table>
 	</div>
 </body>
 <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
