@@ -4,7 +4,6 @@
 	<resultMap id="BaseResultMap" type="cn.fjlcx.application.bean.User">
 		<id column="us_id" jdbcType="INTEGER" property="usId" />
 		<result column="us_loginname" jdbcType="VARCHAR" property="usLoginname" />
-		<result column="us_role" jdbcType="INTEGER" property="usRole" />
 		<result column="us_head" jdbcType="VARCHAR" property="usHead" />
 		<result column="us_name" jdbcType="VARCHAR" property="usName" />
 		<result column="us_sex" jdbcType="INTEGER" property="usSex" />
@@ -15,33 +14,18 @@
 		<result column="us_registdate" jdbcType="TIMESTAMP" property="usRegistdate" />
 		<result column="us_lastlogindate" jdbcType="TIMESTAMP"
 			property="usLastlogindate" />
-		<association column="us_role" javaType="cn.fjlcx.application.bean.Role" property="role" select="getRole"></association>
 	</resultMap>
-
-	<resultMap id="BaseRoleResultMap" type="cn.fjlcx.application.bean.Role">
-		<id column="rl_id" jdbcType="INTEGER" property="rlId" />
-		<result column="rl_code" jdbcType="VARCHAR" property="rlCode" />
-		<result column="rl_name" jdbcType="VARCHAR" property="rlName" />
-		<result column="rl_detail" jdbcType="VARCHAR" property="rlDetail" />
-		<result column="rl_order" jdbcType="INTEGER" property="rlOrder" />
-	</resultMap>
-
 
 	<select id="selectUserWithRole" parameterType="String"
 		resultMap="BaseResultMap">
 		select * from oa_user WHERE us_loginname = #{username}
 	</select>
-
-	<select id="getRole" parameterType="int" resultMap="BaseRoleResultMap">
-		SELECT * FROM
-		oa_role WHERE rl_id = #{us_role}
-	</select>
-
+	
 	<select id="selectUserByConditions" resultMap="BaseResultMap">
 		select
-		us_id,us_loginname,us_role,us_name,us_state
+		us_id,us_loginname,us_name,us_state
 		from oa_user
-		where  us_role != 1 
+		where 1 = 1 
 		<if test="name != null and name !=''">
 			 and us_name LIKE CONCAT(CONCAT('%',#{name}),'%')
 		</if>

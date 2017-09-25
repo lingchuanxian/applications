@@ -16,9 +16,6 @@ public class User {
     @Column(name = "us_pwd")
     private String usPwd;
 
-    @Column(name = "us_role")
-    private Integer usRole;
-
     @Column(name = "us_head")
     private String usHead;
 
@@ -54,17 +51,6 @@ public class User {
     @Column(name = "us_lastlogindate")
     private Date usLastlogindate;
     
-    @Transient
-    private Role role;
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     /**
      * @return us_id
      */
@@ -105,20 +91,6 @@ public class User {
      */
     public void setUsPwd(String usPwd) {
         this.usPwd = usPwd;
-    }
-
-    /**
-     * @return us_role
-     */
-    public Integer getUsRole() {
-        return usRole;
-    }
-
-    /**
-     * @param usRole
-     */
-    public void setUsRole(Integer usRole) {
-        this.usRole = usRole;
     }
 
     /**
@@ -274,7 +246,6 @@ public class User {
 		this.usId = usId;
 		this.usLoginname = usLoginname;
 		this.usPwd = usPwd;
-		this.usRole = usRole;
 		this.usHead = usHead;
 		this.usName = usName;
 		this.usSex = usSex;
@@ -284,7 +255,6 @@ public class User {
 		this.usState = usState;
 		this.usRegistdate = usRegistdate;
 		this.usLastlogindate = usLastlogindate;
-		this.role = role;
 	}
 
 	@Override
@@ -293,7 +263,6 @@ public class User {
                 "usId=" + usId +
                 ", usLoginname='" + usLoginname + '\'' +
                 ", usPwd='" + usPwd + '\'' +
-                ", usRole=" + usRole +
                 ", usHead='" + usHead + '\'' +
                 ", usName='" + usName + '\'' +
                 ", usSex=" + usSex +
@@ -303,7 +272,6 @@ public class User {
                 ", usState=" + usState +
                 ", usRegistdate=" + usRegistdate +
                 ", usLastlogindate=" + usLastlogindate +
-                ", role='" + role + '\'' +
                 '}';
     }
 }

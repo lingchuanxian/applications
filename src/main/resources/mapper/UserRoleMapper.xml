@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.fjlcx.application.mapper.UserRoleMapper">
+  <resultMap id="BaseResultMap" type="cn.fjlcx.application.bean.UserRole">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ur_id" jdbcType="INTEGER" property="urId" />
+    <result column="ur_uid" jdbcType="INTEGER" property="urUid" />
+    <result column="ur_rid" jdbcType="INTEGER" property="urRid" />
+  </resultMap>
+</mapper>

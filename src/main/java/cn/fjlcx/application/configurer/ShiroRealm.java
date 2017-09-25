@@ -78,9 +78,9 @@ public class ShiroRealm extends AuthorizingRealm {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			//用户的角色集合
 			Set<String> set = new HashSet<>();
-			set.add(user.getRole().getRlCode());
+			/*set.add(user.getRole().getRlCode());
 			info.setRoles(set);
-			info.addStringPermission(user.getRole().getRlCode());
+			info.addStringPermission(user.getRole().getRlCode());*/
 			return info;
 		}
 		// 返回null将会导致用户访问任何被拦截的请求时都会自动跳转到unauthorizedUrl指定的地址

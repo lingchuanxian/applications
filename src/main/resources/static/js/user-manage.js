@@ -43,18 +43,6 @@ $(function(){
 				width:220,
 				align:'center',
 			},{
-				field:'role',
-				title:"用户角色",
-				width:220,
-				align:'center',
-				formatter: function(value,row,index){
-					if(row.role.rlName){
-						return row.role.rlName;
-					}else{
-						return "未分配角色";
-					}
-				}
-			},{
 				field:'usState',
 				title:"是否启用",
 				width:180,
