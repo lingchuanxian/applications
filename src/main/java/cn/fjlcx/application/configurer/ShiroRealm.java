@@ -17,10 +17,12 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
 import cn.fjlcx.application.bean.User;
+import cn.fjlcx.application.bean.UserRole;
+import cn.fjlcx.application.service.UserRoleService;
 import cn.fjlcx.application.service.UserService;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -33,6 +35,8 @@ public class ShiroRealm extends AuthorizingRealm {
 	private static final Logger logger = Logger.getLogger(ShiroRealm.class);
 	@Resource
 	UserService mUserService;
+	@Resource
+	UserRoleService mUserRoleService;
 	/**
 	 * 登录认证
 	 */
@@ -77,10 +81,12 @@ public class ShiroRealm extends AuthorizingRealm {
 			// 权限信息对象info，用来存放查出的用户的所有的角色及权限
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			//用户的角色集合
-			Set<String> set = new HashSet<>();
-			/*set.add(user.getRole().getRlCode());
-			info.setRoles(set);
-			info.addStringPermission(user.getRole().getRlCode());*/
+			List<UserRole> roles = mUserRoleService.selectUserRoleByUserId(user.getUsId());
+			List<String> permissions = new ArrayList<String>();
+			for(UserRole role : roles) {
+				permissions.add(role.getUrRole().getRlCode());
+			}
+			info.addRoles(permissions);
 			return info;
 		}
 		// 返回null将会导致用户访问任何被拦截的请求时都会自动跳转到unauthorizedUrl指定的地址

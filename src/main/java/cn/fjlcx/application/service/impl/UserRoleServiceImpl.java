@@ -7,6 +7,8 @@ import cn.fjlcx.application.core.AbstractService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 /**
@@ -18,5 +20,10 @@ import javax.annotation.Resource;
 public class UserRoleServiceImpl extends AbstractService<UserRole> implements UserRoleService {
     @Resource
     private UserRoleMapper oaUserRoleMapper;
+
+	@Override
+	public List<UserRole> selectUserRoleByUserId(int id) {
+		return oaUserRoleMapper.selectUserRoleByUserId(id);
+	}
 
 }

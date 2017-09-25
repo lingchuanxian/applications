@@ -13,8 +13,20 @@ public class UserRole {
 
     @Column(name = "ur_rid")
     private Integer urRid;
+    
+    private Role urRole;
+    
 
-    /**
+
+	public Role getUrRole() {
+		return urRole;
+	}
+
+	public void setUrRole(Role urRole) {
+		this.urRole = urRole;
+	}
+
+	/**
      * @return ur_id
      */
     public Integer getUrId() {

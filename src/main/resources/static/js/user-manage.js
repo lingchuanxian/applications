@@ -256,7 +256,6 @@ $(function(){
 						var user = data.data;
 						$(".name").html(user.usName);
 						$(".loginName").html(user.usLoginname);
-						$(".role").html(user.role.rlName);
 						$(".sex").html(user.usSex==0 ? "男":"女");
 						$(".phone").html(user.usPhone);
 						$(".email").html(user.usMail);

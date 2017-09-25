@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.fjlcx.application.mapper.UserRoleMapper">
-  <resultMap id="BaseResultMap" type="cn.fjlcx.application.bean.UserRole">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="ur_id" jdbcType="INTEGER" property="urId" />
-    <result column="ur_uid" jdbcType="INTEGER" property="urUid" />
-    <result column="ur_rid" jdbcType="INTEGER" property="urRid" />
-  </resultMap>
+	<resultMap id="BaseResultMap" type="cn.fjlcx.application.bean.UserRole">
+		<id column="ur_id" jdbcType="INTEGER" property="urId" />
+		<result column="ur_uid" jdbcType="INTEGER" property="urUid" />
+		<!-- <result column="ur_rid" jdbcType="INTEGER" property="urRid" /> -->
+		<association property="urRole" column="ur_rid"
+			javaType="cn.fjlcx.application.bean.Role" select="getRole">
+		</association>
+	</resultMap>
+
+	<resultMap id="BaseRoleResultMap" type="cn.fjlcx.application.bean.Role">
+		<id column="rl_id" jdbcType="INTEGER" property="rlId" />
+		<result column="rl_code" jdbcType="VARCHAR" property="rlCode" />
+		<result column="rl_name" jdbcType="VARCHAR" property="rlName" />
+		<result column="rl_detail" jdbcType="VARCHAR" property="rlDetail" />
+		<result column="rl_order" jdbcType="INTEGER" property="rlOrder" />
+	</resultMap>
+
+	<select id="selectUserRoleByUserId" parameterType="int"
+		resultMap="BaseResultMap">
+		select * from oa_user_role where ur_uid=#{id}
+	</select>
+
+	<select id="getRole" parameterType="int" resultMap="BaseRoleResultMap">
+		select * from
+		oa_role where rl_id = #{ur_rid}
+	</select>
+
 </mapper>
