@@ -31,6 +31,8 @@ $(function(){
 			method:"POST",
 			url:"GetMenuParent",
 			idField:'muId',
+			width: $(window).width() - 20,
+			height: $(window).height() - 10,
 			rownumbers: true,
 			checkOnSelect : true,  
 			striped: true, //行背景交换

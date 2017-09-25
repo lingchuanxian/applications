@@ -62,7 +62,7 @@ public class CodeGenerator {
     private static final String DATE = new SimpleDateFormat("yyyy/MM/dd").format(new Date());//@date
 
     public static void main(String[] args) {
-        genCode("oa_role","Role");
+        genCode("oa_user_role","UserRole");
         //genCode("oa_user","User");
         //genCode("输入表名","输入自定义Model名称");
     }

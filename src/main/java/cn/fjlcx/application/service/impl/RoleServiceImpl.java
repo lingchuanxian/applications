@@ -13,15 +13,14 @@ import javax.annotation.Resource;
 
 /**
  *  @author ling_cx 
- *  @date   2017/09/22.
+ *  @date   2017/09/25.
  */
 @Service
 @Transactional
 public class RoleServiceImpl extends AbstractService<Role> implements RoleService {
     @Resource
     private RoleMapper oaRoleMapper;
-
-	@Override
+    @Override
 	public List<Role> selectAllOfRole() {
 		return oaRoleMapper.selectAllOfRole();
 	}

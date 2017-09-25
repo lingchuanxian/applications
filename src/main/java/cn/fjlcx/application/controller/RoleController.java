@@ -2,7 +2,6 @@ package cn.fjlcx.application.controller;
 
 import cn.fjlcx.application.core.Result;
 import cn.fjlcx.application.core.ResultGenerator;
-import cn.fjlcx.application.bean.Menu;
 import cn.fjlcx.application.bean.Role;
 import cn.fjlcx.application.service.RoleService;
 import com.github.pagehelper.PageHelper;
@@ -17,7 +16,7 @@ import java.util.List;
 
 /**
  *  @author ling_cx 
- *  @date   2017/09/22.
+ *  @date   2017/09/25.
  */
 @RestController
 @RequestMapping("/role")
@@ -48,4 +47,5 @@ public class RoleController {
 		roleService.deleteById(id);
 		return ResultGenerator.genSuccessResult().setMessage("删除成功");
 	}
+
 }

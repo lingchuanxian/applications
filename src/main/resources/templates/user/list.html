@@ -8,44 +8,122 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
 </head>
-<body class="easyui-layout" data-options="fit:false,scroll:'no'">
-	<table id="user-tb"></table>
-	<div id="user-box">
+<body class="easyui-layout" fit="true" border="false">
+	<div data-options="region:'north'" style="height: 100px;">
+		<fieldset
+			style="border-radius: 10px; border: 1px solid #C3C3C3;">
+			<legend style="font-size:14px;">信息检索</legend>
+			<form id="ffSearch" method="post">
+				<table cellspacing="0" cellpadding="0">
+					<tr>
+						<td>用户名：</td>
+						<td><input type="text" id="name"
+							style="width: 200px" /></td>
+					</tr>
+					<tr>
+						<td>登录帐号：</td>
+						<td><input type="text" id="loginName"
+							style="width: 200px" /></td>
+						<td colspan="2" style="padding-left:20px;"><a href="javascript:;"
+							class="easyui-linkbutton" data-options="iconCls:'icon-search'"
+							id="btnSearch">查询</a></td>
+					</tr>
+				</table>
+			</form>
+		</fieldset>
+	</div>
+	<div data-options="region:'center',split:false">
+		<table id="user-tb"></table>
+	</div>
+	<div class="box" id="user-box" style="display: none;">
+		<form id="user-form" method="post">
+			<table class="rb-add-user" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td class="td_key">用户名：</td>
+					<td class="td_val"><input class="easyui-validatebox"
+						type="text" name="usName" data-options="required:true"
+						missingMessage="请填写用户名" /></td>
+					<td class="td_key">登陆账号：</td>
+					<td class="td_val"><input class="easyui-validatebox"
+						type="text" name="usLoginname"
+						data-options="required:true,validType:'isExist'"
+						missingMessage="请填写登录帐号" /></td>
+				</tr>
+				<tr>
+					<td class="td_key">密码：</td>
+					<td class="td_val"><input id="pwd" class="easyui-validatebox"
+						type="password" name="usPwd"
+						data-options="required:true,validType:'minLength[6]'"
+						missingMessage="请填写登录密码" /></td>
+					<td class="td_key">重复密码：</td>
+					<td class="td_val"><input class="easyui-validatebox"
+						type="password" name="reusPwd" data-options="required:true"
+						validType="equals['#pwd']" missingMessage="请再次填写登录密码" /></td>
+				</tr>
+				<tr>
+					<td class="td_key">角色：</td>
+					<td class="td_val"><input class="easyui-combobox"
+						id="role-combox" style="width: 170px;" name="usRole" /></td>
+					<td class="td_key">性别：</td>
+					<td class="td_val"><select class="easyui-combobox"
+						style="width: 170px;" name="usSex" editable="false">
+							<option value="0">男</option>
+							<option value="1">女</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td class="td_key">手机号：</td>
+					<td class="td_val"><input class="easyui-validatebox"
+						type="text" name="usPhone"
+						data-options="required:true,validType:'mobile'"
+						missingMessage="请填写手机号" /></td>
+					<td class="td_key">邮箱：</td>
+					<td class="td_val"><input class="easyui-validatebox"
+						type="text" name="usMail"
+						data-options="required:true,validType:'email'"
+						missingMessage="请填写邮箱地址" /></td>
+				</tr>
+				<tr>
+					<td class="td_key">联系地址：</td>
+					<td class="td_val" colspan="3"><input
+						class="easyui-validatebox" type="text" name="usAddress"
+						style="width: 560px;" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	<div class="box" id="user-detail-box" style="display: none;">
 		<table class="rb-add-user" border="0" cellspacing="0" cellpadding="0">
-			<tr>
-				<td class="td_key">用户名：</td>
-				<td class="td_val"><input class="easyui-validatebox" type="text" name="Name" /></td>
-				<td class="td_key">登陆账号：</td>
-				<td class="td_val"><input class="easyui-validatebox" type="text" name="Name" /></td>
-			</tr>
-			<tr>
-				<td class="td_key">密码：</td>
-				<td class="td_val"><input class="easyui-validatebox" type="password" name="Name" /></td>
-				<td class="td_key">重复密码：</td>
-				<td class="td_val"><input class="easyui-validatebox" type="password" name="Name" /></td>
-			</tr>
-			<tr>
-				<td class="td_key">角色：</td>
-				<td class="td_val">
-					<input class="easyui-combobox" id="role-combox" name="Name"/>
-				</td>
-				<td class="td_key">性别：</td>
-				<td class="td_val"><select class="easyui-combobox" style="width:170px;" editable="false">
-					<option value = "0">男</option>
-					<option value = "1">女</option>
-				</select></td>
-			</tr>
-			<tr>
-				<td class="td_key">手机号：</td>
-				<td class="td_val"><input class="easyui-validatebox" type="password" name="Name" /></td>
-				<td class="td_key">邮箱：</td>
-				<td class="td_val"><input class="easyui-validatebox" type="password" name="Name" /></td>
-			</tr>
-			<tr>
-				<td class="td_key">联系地址：</td>
-				<td class="td_val" colspan="3"><input class="easyui-validatebox" type="password" name="Name" style="width:560px;"/></td>
-			</tr>
-		</table>
+				<tr>
+					<td class="td_key">用户名：</td>
+					<td class="td_val name"></td>
+					<td class="td_key">登陆账号：</td>
+					<td class="td_val loginName"></td>
+				</tr>
+				<tr>
+					<td class="td_key">角色：</td>
+					<td class="td_val role"></td>
+					<td class="td_key">性别：</td>
+					<td class="td_val sex"></td>
+				</tr>
+				<tr>
+					<td class="td_key">手机号：</td>
+					<td class="td_val phone"></td>
+					<td class="td_key">邮箱：</td>
+					<td class="td_val email"></td>
+				</tr>
+				<tr>
+					<td class="td_key">联系地址：</td>
+					<td class="td_val address" colspan="3"></td>
+				</tr>
+				<tr>
+					<td class="td_key">添加时间：</td>
+					<td class="td_val addDate"></td>
+					<td class="td_key">上一次登录时间：</td>
+					<td class="td_val loginDate"></td>
+				</tr>
+			</table>
 	</div>
 </body>
 <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>

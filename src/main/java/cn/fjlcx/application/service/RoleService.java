@@ -6,7 +6,7 @@ import cn.fjlcx.application.core.Service;
 
 /**
  *  @author ling_cx 
- *  @date   2017/09/22.
+ *  @date   2017/09/25.
  */
 public interface RoleService extends Service<Role> {
 	List<Role> selectAllOfRole();

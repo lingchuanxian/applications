@@ -13,7 +13,7 @@ $.extend($.fn.validatebox.defaults.rules,
                 var reg = /^1[3|4|5|8|9]\d{9}$/;
                 return reg.test(value);
             },
-            message : '输入手机号码格式不准确.'
+            message : '输入手机号码格式不正确.'
         },
         combo : {
             validator : function(value) {
@@ -200,17 +200,18 @@ $.extend($.fn.validatebox.defaults.rules,
 function checkExist(valueName) {
     var b = 1;
     $.ajax({
-        url: "/admin/oauser/checkExist.shtml",
+        url: "checkExist",
         type: "post",
-        dataType: "text",
+        dataType: "json",
         async: false,//是否异步执行
-        data:{username:valueName},
-        success: function (msg) {
-            b = msg;
+        data:{name:valueName},
+        success: function (data) {
+            b = data.data;
         },
         error: function (errorMSG) {
             b = false;
         }
     });
+    console.log(b);
     return b;
 }

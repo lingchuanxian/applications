@@ -7,16 +7,15 @@ $(function(){
 	var editRow = undefined; //定义全局变量：当前编辑的行
 	datagrid = $("#user-tb").datagrid({
 		title:"用户列表",
-		dnd: true,
 		method:"GET",
 		url:"GetUserList",
 		idField:'usId',
 		rownumbers: true,
 		singleSelect:true,
-		fit:true,
-		width:function () { return document.body.clientWidth * 0.9 },
+		width: $(window).width() - 6,
+		height: $(window).height() - 110,
 		striped: true, //行背景交换
-		fitColumns:true,
+		fitColumns:false,
 		pagination:true,//分页控件 
 		pageSize: 20,//每页显示的记录条数，默认为10 
 		pageList: [10,20,50,100],//可以设置每页记录条数的列表 
@@ -31,22 +30,22 @@ $(function(){
 			{
 				field:'usId',
 				title:"用户编号",
-				width:40,
+				width:100,
 				align:'center',
 			},{
 				field:'usName',
 				title:"用户名",
-				width:60,
+				width:220,
 				align:'center',
 			},{
 				field:'usLoginname',
-				title:"登陆账号",
-				width:60,
+				title:"登录账号",
+				width:220,
 				align:'center',
 			},{
 				field:'role',
 				title:"用户角色",
-				width:60,
+				width:220,
 				align:'center',
 				formatter: function(value,row,index){
 					if(row.role.rlName){
@@ -56,36 +55,9 @@ $(function(){
 					}
 				}
 			},{
-				field:'usSex',
-				title:"性别",
-				width:50,
-				align:'center',
-				formatter: function(value,row,index){
-					if(value == 0){
-						return "男";
-					}else{
-						return "女";
-					}
-				}
-			},{
-				field:'usPhone',
-				title:"手机号",
-				width:60,
-				align:'center',
-			},{
-				field:'usMail',
-				title:"邮箱",
-				width:80,
-				align:'center',
-			},{
-				field:'usAddress',
-				title:"联系地址",
-				width:140,
-				align:'center',
-			},{
 				field:'usState',
-				title:"启用",
-				width:30,
+				title:"是否启用",
+				width:180,
 				align:'center',
 				formatter: function(value,row,index){
 					if(value == 0){
@@ -94,49 +66,65 @@ $(function(){
 						return '<a class="state-no" href="javascript:void(0)">否</a>';
 					}
 				}
-			},{
-				field:'usRegistdate',
-				title:"添加时间",
-				width:80,
-				align:'center',
-				formatter: function(value,row,index){
-					return jsonYearMonthDay(value);
-				}
-			},{
-				field:'usLastlogindate',
-				title:"最后登陆时间",
-				width:80,
-				align:'center',
-				formatter: function(value,row,index){
-					return jsonTimeStamp(value);
-				}
 			}
 			]],
 			toolbar:[{
 				text:'新增',
-				iconCls:'icon-image-add',
+				iconCls:'icon-user-add',
 				handler:function(){
+					getRoleType($('#role-combox'));
 					$('#user-box').dialog("open");
 				}
 			},'-',{
+				text:'查看',
+				iconCls:'icon-user-magnify',
+				handler:function(){
+					showDetail();
+				}
+			},'-',{
 				text:'编辑',
-				iconCls:'icon-layout-edit',
+				iconCls:'icon-user-edit',
 				handler:function(){
 
 				}
 			},'-',{
 				text:'删除',
-				iconCls:'icon-layout-delete',
+				iconCls:'icon-user-delete',
 				handler:function(){
 					doDelete(datagrid);
 				}
+			},'-',{
+				id:'start',
+				text:'启用',
+				iconCls:'icon-user-accept16',
+				handler:function(){
+					changeState(0);
+				}
+			},{
+				id:'stop',
+				text:'停用',
+				iconCls:'icon-user-reject16',
+				handler:function(){
+					changeState(1);
+				}
 			}],
 			onBeforeLoad:function(){
+				$("#start").hide();
+				$("#stop").hide();
 			},
 			onLoadSuccess: function(row){
 				$(".state-yes").linkbutton({ text: '是', plain: true, iconCls: 'icon-ok' });
 				$(".state-no").linkbutton({ text: '否', plain: true, iconCls: 'icon-stop' });
-			}
+			},
+			onSelect:function(rowIndex, rowData){  
+	             if(rowData.usState == 0){
+	            	 $("#stop").show();
+	            	 $("#start").hide();
+	             }else{
+	            	 $("#start").show();
+	            	 $("#stop").hide();
+	             }
+	        },
 	});
 	//设置分页控件 
 	var p = datagrid.datagrid('getPager'); 
@@ -144,29 +132,24 @@ $(function(){
 		beforePageText: '第',//页数文本框前显示的汉字 
 		afterPageText: '页    共 {pages} 页', 
 		displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录', 
-		/*onBeforeRefresh:function(){
-            $(this).pagination('loading');
-            alert('before refresh');
-            $(this).pagination('loaded');
-        }*/ 
 	}); 
 
 	//删除数据
 	function doDelete(datagrid) {
 		var selectRows =datagrid.treegrid("getSelections");
 		if (selectRows.length < 1) {
-			$.messager.alert("提示消息", "请选择要删除的菜单!");
+			$.messager.alert("提示消息", "请选择要删除的用户!");
 			return;
 		}
 		//提醒用户是否是真的删除数据
-		$.messager.confirm("确认消息", "您确定要删除角色【"+selectRows[0].rlName+"】吗？", function (r) {
+		$.messager.confirm("确认消息", "您确定要删除用户【"+selectRows[0].usName+"】吗？", function (r) {
 			if (r) {
 				MaskUtil.mask();
 				$.ajax({
-					url: "DeleteRoleById",
+					url: "DeleteUserById",
 					type: "post",
 					dataType: "json",
-					data:{"id": selectRows[0].rlId},
+					data:{"id": selectRows[0].usId},
 					success: function (data) {
 						MaskUtil.unmask();
 						if(data.code == 200){
@@ -181,44 +164,156 @@ $(function(){
 		});
 	}
 
+	/*getRoleType($('#role-combox-search'));*/
+	$("#btnSearch").click(function(){
+		doSearch();
+	});
+	
+	function doSearch(){
+		$('#user-tb').datagrid('load',{
+			name: $('#name').val(),
+			loginName: $('#loginName').val()
+		});
+	}
+	
 	$('#user-box').dialog({
 		title: '用户新增',
 		width: 800,
-		height: 300,
-		closed: false,
+		height: 500,
+		closed: true,
 		cache: false,
 		modal: true,
 		buttons:[{
 			text:'保存',
-			handler:function(){}
+			iconCls:'icon-ok',
+			handler:function(){
+				formAddSubmit();
+			}
 		},{
 			text:'取消',
+			iconCls:'icon-cancel',
 			handler:function(){
 				$('#user-box').dialog("close");
 			}
 		}]
 	});
-
-	$('#role-combox').combobox({  
-		method:"GET",
-		url:'../role/selectAllOfRole',  
-		valueField:'rlId',  
-		textField:'rlName',
-		editable:false,
-		loadFilter: function(data){
-			if (data.code == 200){
-				return data.data;
-			}else{
-				alert("1:"+data.message);
+	
+	$('#user-detail-box').dialog({
+		title: '用户详情',
+		width: 800,
+		height: 500,
+		closed: true,
+		cache: false,
+		modal: true,
+		buttons:[{
+			text:'关闭',
+			iconCls:'icon-cancel',
+			handler:function(){
+				$('#user-detail-box').dialog("close");
 			}
-		},
-		onLoadSuccess: function () { //加载完成后,val[0]写死设置选中第一项
-            var val = $(this).combobox("getData");
-            for (var item in val[0]) {
-                if (item == "rlName") {
-                    $(this).combobox("select", val[0][item]);
-                }
-            }
-        }
-	});  
+		}]
+	});
+
+
+	function getRoleType(combobox){
+		combobox.combobox({  
+			method:"GET",
+			url:'../role/selectAllOfRole',  
+			valueField:'rlId',  
+			textField:'rlName',
+			editable:false,
+			loadFilter: function(data){
+				if (data.code == 200){
+					return data.data;
+				}else{
+					alert("1:"+data.message);
+				}
+			},
+			onLoadSuccess: function () { 
+				var data = $(this).combobox("getData");
+				if(data.length > 0){
+					$(this).combobox("select", data[0].rlId);
+				}
+			}
+		});  
+	}
+	
+	function formAddSubmit(){
+		$('#user-form').form('submit', {
+			url:'AddUser',
+			onSubmit: function(){
+				return $(this).form('enableValidation').form('validate');
+			},
+			success:function(data){
+				$('#user-box').dialog("close");
+				$('#user-form').form("clear");
+				datagrid.datagrid("reload");
+			}
+		});
+	}
+	
+	function showDetail(){
+		var selectRows =datagrid.treegrid("getSelections");
+		if (selectRows.length < 1) {
+			$.messager.alert("提示消息", "请选择要查看的用户!");
+			return;
+		}else{
+			$.ajax({
+				url: "SelectUserById",
+				type: "post",
+				dataType: "json",
+				data:{"id": selectRows[0].usId},
+				success: function (data) {
+					if(data.code == 200){
+						var user = data.data;
+						$(".name").html(user.usName);
+						$(".loginName").html(user.usLoginname);
+						$(".role").html(user.role.rlName);
+						$(".sex").html(user.usSex==0 ? "男":"女");
+						$(".phone").html(user.usPhone);
+						$(".email").html(user.usMail);
+						$(".address").html(user.usAddress);
+						$(".addDate").html(jsonYearMonthDay(user.usRegistdate));
+						$(".loginDate").html(jsonTimeStamp(user.usLastlogindate));
+						$('#user-detail-box').dialog("open");
+					}else{
+						$.messager.alert("删除提示", data.message);
+					}
+				}
+			});
+		}
+	}
+	
+	function changeState(state){
+		var selectRows =datagrid.treegrid("getSelections");
+		var str = "";
+		if(state == 0){
+			str = "启用";
+		}else{
+			str = "停用";
+		}
+		$.messager.confirm("确认消息", "您确定要"+str+"帐号【"+selectRows[0].usName+"】吗？", function (r) {
+			if (r) {
+				$.ajax({
+					url:'UpdateUserState',
+					type:'post',
+					dataType: 'json',
+					data: {  
+						"id" : selectRows[0].usId,
+						"state":state,
+					},
+					success:function(data){
+						if(data.code== 200){
+							datagrid.datagrid("reload");
+							datagrid.datagrid("clearSelections");
+						}
+					},
+					error:function(e){
+						alert(e.message);
+					}
+				});
+			}
+		});
+		
+	}
 });

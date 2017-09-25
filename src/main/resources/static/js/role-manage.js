@@ -12,6 +12,8 @@ $(function(){
 		idField:'rlId',
 		rownumbers: true,
 		checkOnSelect : true,  
+		width: $(window).width() - 20,
+		height: $(window).height() - 10,
 		striped: true, //行背景交换
 		fitColumns:true,
 		singleSelect:true,
