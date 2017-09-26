@@ -81,7 +81,6 @@ $(function(){
 				iconCls:'icon-user-add',
 				handler:function(){
 					loadCombotreeOfOrg();
-					loadCombotreeOfDep();
 					getRoleType($('#role-combox'));
 					$("#user-form").form("disableValidation");
 					$('#user-box').dialog("open");
@@ -240,14 +239,18 @@ $(function(){
 			},
 			onLoadSuccess: function (node,data) { 
 				$("#org-combox").combotree('setValue', { id: data[0].id, text: data[0].text }); 
+				loadCombotreeOfDep(data[0].id);
+			},
+			onSelect:function(node) {
+				loadCombotreeOfDep(node.id);
 			}
 		});  
 	}
 	
-	function loadCombotreeOfDep(){
+	function loadCombotreeOfDep(id){
 		$("#dep-combox").combotree({  
 			method:"GET",
-			url:'../department/selectDepForSelect',  
+			url:'../department/selectDepForSelect?id='+id,  
 			editable:false,
 			loadFilter: function(data){
 				if (data.code == 200){

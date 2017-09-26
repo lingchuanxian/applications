@@ -1,12 +1,12 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8"/>
+<meta charset="UTF-8" />
 <title>数字办公系统</title>
 <link rel="stylesheet" id="easyuiTheme" type="text/css"
-	th:href="@{/easyui/themes/default/easyui.css}"/>
-<link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}"/>
-<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+	th:href="@{/easyui/themes/default/easyui.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
 </head>
 <body class="easyui-layout" data-options="fit:true,scroll:'no'">
 	<div class="header" data-options="region:'north',border:false">
@@ -14,13 +14,28 @@
 			<img th:src="@{/images/logo.png}" />
 		</div>
 		<div class="header-right">
-			<p>
-				<strong></strong>，欢迎您！
-			</p>
-			<p>
-				<a href="#">网站首页</a>|<a href="#">支持论坛</a>|<a href="#">帮助中心</a>|<a
-					href="javascript:void(0);" class="exit">安全退出</a>
-			</p>
+			<div>
+				欢迎您
+			</div>
+			<div>
+				<a href="javascript:void(0);" class="easyui-menubutton"
+				data-options="menu:'#layout_north_pfMenu'">更换皮肤</a> |<a href="#">网站首页</a>|<a
+				href="#">支持论坛</a>|<a href="#">帮助中心</a>|<a href="javascript:void(0);"
+				class="exit">安全退出</a>
+			</div>
+
+			<div id="layout_north_pfMenu" style="display: none;">
+				<div onclick="changeTheme('default');">default</div>
+				<div onclick="changeTheme('black');">black</div>
+				<div onclick="changeTheme('bootstrap');">bootstrap</div>
+				<div onclick="changeTheme('gray');">gray</div>
+				<div onclick="changeTheme('metro');">metro</div>
+				<div onclick="changeTheme('material');">material</div>
+				<div onclick="changeTheme('ui-cupertino');">ui-cupertino</div>
+				<div onclick="changeTheme('ui-dark-hive');">ui-dark-hive</div>
+				<div onclick="changeTheme('ui-pepper-grinder');">ui-pepper-grinder</div>
+				<div onclick="changeTheme('ui-sunny');">ui-sunny</div>
+			</div>
 		</div>
 
 		<div id="cpw_dlg" class="easyui-dialog" title="修改密码" closed="true"
@@ -40,8 +55,8 @@
 	</div>
 	<div data-options="region:'west',split:true,title:'导航菜单'"
 		style="width: 200px;">
-		<div id="layout_west_accordion" class="easyui-accordion" data-options="fit:true,nimate:true,lines:true">  
-		</div>
+		<div id="layout_west_accordion" class="easyui-accordion"
+			data-options="fit:true,nimate:true,lines:true"></div>
 	</div>
 	<div data-options="region:'south',border:false" style="height: 30px;">
 		<div class="footer">@Copyright 2017 ling_cx</div>
@@ -49,8 +64,7 @@
 	<div data-options="region:'center'">
 		<div id="tabs" class="easyui-tabs"
 			data-options="tools:'#tab-tools',fit:true,border:false">
-			<div title="主页"
-				data-options="iconCls:'icon-house',closable:false"
+			<div title="主页" data-options="iconCls:'icon-house',closable:false"
 				style="padding: 10px"></div>
 		</div>
 	</div>
@@ -62,15 +76,15 @@
 		<div id="closeother" data-options="iconCls:'icon-close-other'">关闭其他</div>
 	</div>
 	<script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
-	<script type="text/javascript" th:src="@{/js/jquery-custom.js}"></script> 
+	<script type="text/javascript" th:src="@{/js/jquery-custom.js}"></script>
 	<script type="text/javascript" th:src="@{/js/jquery.cookie.js}"></script>
 	<script type="text/javascript" th:src="@{/js/easyui-common.js}"></script>
-	<script type="text/javascript" th:src="@{/js/menu.js}"></script> 
+	<script type="text/javascript" th:src="@{/js/menu.js}"></script>
 	<script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
 	<script type="text/javascript" th:src="@{/easyui/easyui-lang-zh_CN.js}"></script>
 	<script type="text/javascript" th:src="@{/easyui/validateExtend.js}"></script>
 
 	<script type="text/javascript" th:src="@{/js/loading.js}"></script>
-	
+
 </body>
 </html>

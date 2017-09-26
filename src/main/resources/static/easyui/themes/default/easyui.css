@@ -955,7 +955,8 @@ body{
 }
 .combo-arrow {
   width: 18px;
-  height: 20px;
+  height: 25px!important;
+  line-height:25px;
   overflow: hidden;
   display: inline-block;
   vertical-align: top;

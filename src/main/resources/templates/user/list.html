@@ -10,23 +10,20 @@
 </head>
 <body class="easyui-layout" fit="true" border="false">
 	<div data-options="region:'north'" style="height: 100px;">
-		<fieldset
-			style="border-radius: 10px; border: 1px solid #C3C3C3;">
-			<legend style="font-size:14px;">信息检索</legend>
+		<fieldset style="border-radius: 10px; border: 1px solid #C3C3C3;">
+			<legend style="font-size: 14px;">信息检索</legend>
 			<form id="ffSearch" method="post">
 				<table cellspacing="0" cellpadding="0">
 					<tr>
 						<td>用户名：</td>
-						<td><input type="text" id="name"
-							style="width: 200px" /></td>
+						<td><input type="text" id="name" style="width: 200px" /></td>
 					</tr>
 					<tr>
 						<td>登录帐号：</td>
-						<td><input type="text" id="loginName"
-							style="width: 200px" /></td>
-						<td colspan="2" style="padding-left:20px;"><a href="javascript:;"
-							class="easyui-linkbutton" data-options="iconCls:'icon-search'"
-							id="btnSearch">查询</a></td>
+						<td><input type="text" id="loginName" style="width: 200px" /></td>
+						<td colspan="2" style="padding-left: 20px;"><a
+							href="javascript:;" class="easyui-linkbutton"
+							data-options="iconCls:'icon-search'" id="btnSearch">查询</a></td>
 					</tr>
 				</table>
 			</form>
@@ -40,12 +37,11 @@
 			<table class="rb-add-user" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td class="td_key">用户名：</td>
-					<td class="td_val"><input class="easyui-textbox"
-						type="text" name="usName" data-options="required:true"
-						missingMessage="请填写用户名" /></td>
+					<td class="td_val"><input class="easyui-textbox" type="text"
+						name="usName" data-options="required:true" missingMessage="请填写用户名" /></td>
 					<td class="td_key">登陆账号：</td>
-					<td class="td_val"><input class="easyui-textbox"
-						type="text" name="usLoginname"
+					<td class="td_val"><input class="easyui-textbox" type="text"
+						name="usLoginname"
 						data-options="required:true,validType:'isExist'"
 						missingMessage="请填写登录帐号" /></td>
 				</tr>
@@ -69,67 +65,59 @@
 						validType="equals['#pwd']" missingMessage="请再次填写登录密码" /></td>
 				</tr>
 				<tr>
-					<td class="td_key">角色：</td>
-					<td class="td_val"><input class="easyui-combobox"
-						id="role-combox" style="width: 204px;" name="usRole" /></td>
 					<td class="td_key">性别：</td>
 					<td class="td_val"><select class="easyui-combobox"
 						style="width: 204px;" name="usSex" editable="false">
 							<option value="0">男</option>
 							<option value="1">女</option>
 					</select></td>
-				</tr>
-				<tr>
 					<td class="td_key">手机号：</td>
-					<td class="td_val"><input class="easyui-textbox"
-						type="text" name="usPhone"
-						data-options="required:true,validType:'mobile'"
+					<td class="td_val"><input class="easyui-textbox" type="text"
+						name="usPhone" data-options="required:true,validType:'mobile'"
 						missingMessage="请填写手机号" /></td>
-					<td class="td_key">邮箱：</td>
-					<td class="td_val"><input class="easyui-textbox"
-						type="text" name="usMail"
-						data-options="required:true,validType:'email'"
-						missingMessage="请填写邮箱地址" /></td>
 				</tr>
 				<tr>
+					<td class="td_key">邮箱：</td>
+					<td class="td_val"><input class="easyui-textbox" type="text"
+						name="usMail" data-options="required:true,validType:'email'"
+						missingMessage="请填写邮箱地址" /></td>
 					<td class="td_key">联系地址：</td>
-					<td class="td_val" colspan="3"><input
-						class="easyui-textbox" type="text" name="usAddress"
-						style="width: 560px;" /></td>
+					<td class="td_val"><input class="easyui-textbox"
+						type="text" name="usAddress" /></td>
 				</tr>
 			</table>
 		</form>
 	</div>
-	
+
 	<div class="box" id="user-detail-box" style="display: none;">
 		<table class="rb-add-user" border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td class="td_key">用户名：</td>
-					<td class="td_val name"></td>
-					<td class="td_key">登陆账号：</td>
-					<td class="td_val loginName"></td>
-				</tr>
-				<tr>
-					<td class="td_key">性别：</td>
-					<td class="td_val sex"></td>
-					<td class="td_key">手机号：</td>
-					<td class="td_val phone"></td>
-				</tr>
-				<tr>
-					<td class="td_key">联系地址：</td>
-					<td class="td_val address" colspan="3"></td>
-				</tr>
-				<tr>
-					<td class="td_key">添加时间：</td>
-					<td class="td_val addDate"></td>
-					<td class="td_key">上一次登录时间：</td>
-					<td class="td_val loginDate"></td>
-				</tr>
-				<tr>
-					<td class="td_key">邮箱：</td>
-					<td class="td_val email" colspan="3"></td>
-				</tr>
-			</table>
+			<tr>
+				<td class="td_key">用户名：</td>
+				<td class="td_val name"></td>
+				<td class="td_key">登陆账号：</td>
+				<td class="td_val loginName"></td>
+			</tr>
+			<tr>
+				<td class="td_key">性别：</td>
+				<td class="td_val sex"></td>
+				<td class="td_key">手机号：</td>
+				<td class="td_val phone"></td>
+			</tr>
+			<tr>
+				<td class="td_key">联系地址：</td>
+				<td class="td_val address" colspan="3"></td>
+			</tr>
+			<tr>
+				<td class="td_key">添加时间：</td>
+				<td class="td_val addDate"></td>
+				<td class="td_key">上一次登录时间：</td>
+				<td class="td_val loginDate"></td>
+			</tr>
+			<tr>
+				<td class="td_key">邮箱：</td>
+				<td class="td_val email" colspan="3"></td>
+			</tr>
+		</table>
 	</div>
 </body>
 <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>

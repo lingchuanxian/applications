@@ -36,8 +36,8 @@ public class DepartmentController {
 
 	 
     @GetMapping("selectDepForSelect")
-   	public Result selectDepForSelect() {
-   		List<Department> department = departmentService.findAll();
+   	public Result selectDepForSelect(@RequestParam int id) {
+   		List<Department> department = departmentService.selectDepByOrgId(id);
    		List<TreeJson> treeList = new ArrayList<>();
    		for(Department dep : department) {
    			TreeJson tree = new TreeJson();
@@ -78,5 +78,4 @@ public class DepartmentController {
 		departmentService.update(dep2);
 		return ResultGenerator.genSuccessResult().setMessage("修改成功");
 	}
-
 }
