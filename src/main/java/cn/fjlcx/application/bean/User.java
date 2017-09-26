@@ -16,6 +16,12 @@ public class User {
     @Column(name = "us_pwd")
     private String usPwd;
 
+    @Column(name = "us_orgid")
+    private Integer usOrgid;
+
+    @Column(name = "us_depid")
+    private Integer usDepid;
+    
     @Column(name = "us_head")
     private String usHead;
 
@@ -51,7 +57,45 @@ public class User {
     @Column(name = "us_lastlogindate")
     private Date usLastlogindate;
     
-    /**
+    @Transient
+    private Organization organization;
+    
+    @Transient
+    private Department department;
+    
+    public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
+
+	public Integer getUsOrgid() {
+		return usOrgid;
+	}
+
+	public void setUsOrgid(Integer usOrgid) {
+		this.usOrgid = usOrgid;
+	}
+
+	public Integer getUsDepid() {
+		return usDepid;
+	}
+
+	public void setUsDepid(Integer usDepid) {
+		this.usDepid = usDepid;
+	}
+
+	/**
      * @return us_id
      */
     public Integer getUsId() {

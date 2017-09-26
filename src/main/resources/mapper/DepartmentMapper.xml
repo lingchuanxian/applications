@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.fjlcx.application.mapper.DepartmentMapper">
+	<resultMap id="BaseResultMap" type="cn.fjlcx.application.bean.Department">
+		<id column="dep_id" jdbcType="INTEGER" property="depId" />
+		<result column="dep_name" jdbcType="VARCHAR" property="depName" />
+		<result column="dep_pid" jdbcType="INTEGER" property="depPid" />
+		<result column="dep_order" jdbcType="INTEGER" property="depOrder" />
+		<result column="dep_detail" jdbcType="LONGVARCHAR" property="depDetail" />
+		<association property="organization" column="dep_orgid"
+			javaType="cn.fjlcx.application.bean.Organization" select="getOrg">
+		</association>
+	</resultMap>
+
+	<resultMap id="BaseOrgResultMap" type="cn.fjlcx.application.bean.Organization">
+		<id column="org_id" jdbcType="INTEGER" property="orgId" />
+		<result column="org_name" jdbcType="VARCHAR" property="orgName" />
+		<result column="org_code" jdbcType="VARCHAR" property="orgCode" />
+		<result column="org_pid" jdbcType="INTEGER" property="orgPid" />
+		<result column="org_detail" jdbcType="LONGVARCHAR" property="orgDetail" />
+		<result column="org_order" jdbcType="INTEGER" property="orgOrder" />
+	</resultMap>
+
+	<select id="selectDepByOrgId" parameterType="int" resultMap="BaseResultMap">
+		select * from oa_department where dep_orgid = #{id} order by dep_order
+	</select>
+
+	<select id="selectDepById" parameterType="int" resultMap="BaseResultMap">
+		select
+		* from oa_department where dep_id = #{id}
+	</select>
+
+	<select id="getOrg" parameterType="int" resultMap="BaseOrgResultMap">
+		select * from
+		oa_organization where org_id = #{dep_orgid}
+	</select>
+
+	<select id="selectMaxOrder" resultType="int">
+		select max(dep_order) from oa_department
+	</select>
+
+</mapper>

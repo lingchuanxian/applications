@@ -1,7 +1,7 @@
 $(function(){
 	$('#tt').tree({
-		method : 'POST',
-		url : '../menu/MagageMenuList',
+		method : 'GET',
+		url : '../organization/selectOrganizationForSelect',
 		animate:true,
 		loadFilter: function(data){
 			if (data.code == 200){
@@ -14,22 +14,21 @@ $(function(){
 			alert('系统异常，请稍候再试');
 		},
 		onClick: function(node){
-			if(node.id == -1){
-				loadMenu(0,"[主菜单]—子菜单模块");
-			}else{
-				loadMenu(node.id,"["+node.text+"]—子菜单模块");
-			}
+			loadMenu(node.id,"["+node.text+"]—下属部门");
+		},
+		onLoadSuccess:function(node, data){
+			loadMenu(data[0].id,"["+data[0].text+"]—下属部门");
 		}
 	});
-	loadMenu(0,"[主菜单]—子菜单模块");
+	
 	function loadMenu(nodeId,text){
 		var datagrid; //定义全局变量datagrid
 		var editRow = undefined; //定义全局变量：当前编辑的行
-		datagrid = $("#FMenuManage").datagrid({
+		datagrid = $("#DepManage").datagrid({
 			title:text,
 			method:"POST",
-			url:"GetMenuParent",
-			idField:'muId',
+			url:"GetDepartmentByOrgId",
+			idField:'depId',
 			rownumbers: true,
 			fit:false,
 			striped: true, //行背景交换
@@ -47,58 +46,25 @@ $(function(){
 			},
 			columns:[[
 			{
-				field:'muId',
-				title:"菜单编号",
+				field:'depId',
+				title:"部门编号",
 				width:10,
 				align:'center',
 			},{
-				field:'muText',
-				title:"菜单名称",
+				field:'depName',
+				title:"部门名称",
 				width:30,
 				align:'center',
 				editor: { type: 'validatebox', options: { required: true} }
 			},{
-				field:'muIconcls',
-				title:"图标",
+				field:'depDetail',
+				title:"部门描述",
 				width:40,
 				align:'center',
 				editor: { 
 					type: 'validatebox',
 				}
-			},{
-				field:'muUrl',
-				title:"请求地址",
-				width:70,
-				align:'center',
-				editor: { type: 'validatebox'}
-			},{
-				field:'muState',
-				title:"状态",
-				width:30,
-				align:'center',
-				editor:{//编辑选项  
-					type:'combobox',  
-					options:{
-						valueField: 'value',  
-						textField: 'text',  
-						data: [{ 'value': 'closed', 'text': 'closed' }, { 'value': 'open', 'text': 'open'}]  
-					}
-				}  
-			},{
-				field:'muChecked',
-				title:"是否选中",
-				width:30,
-				align:'center',
-				editor:{//编辑选项  
-					type:'combobox',  
-					options:{
-						valueField: 'value',  
-						textField: 'text',  
-						data: [{ 'value': 'false', 'text': 'false' }, { 'value': 'true', 'text': 'true'}]  
-					}
-				}  
-			}
-			]],
+			}]],
 			toolbar:[{
 				text:'新增',
 				iconCls:'icon-image-add',
@@ -110,11 +76,8 @@ $(function(){
 					//添加时如果没有正在编辑的行，则在datagrid的最后追加
 					if (editRow == undefined) {
 						var index = datagrid.datagrid("appendRow", {
-							muText: '',
-							muIconcls: 'icon-node',
-							muChecked:'false',
-							muState:'closed',
-							muUrl: ''
+							depName: '',
+							depDetail: '',
 						}).datagrid('getRows').length-1;;
 						//将新插入的那一行开户编辑状态
 						datagrid.datagrid("beginEdit", index);
@@ -200,31 +163,28 @@ $(function(){
 			},
 			onAfterEdit:function(index,row){
 				$.ajax({
-					url:'UpdateMenu',
+					url:'AddOrUpdateDep',
 					type:'post',
 					dataType: 'json',
 					data: {  
-						"muId" : row.muId,
-						"muText":row.muText,
-						"muIconcls":row.muIconcls,
-						"muUrl":row.muUrl,
-						"muChecked":row.muChecked,
-						"muState":row.muState,
-						"muPid":nodeId
+						"depId" : row.depId,
+						"depName":row.depName,
+						"depDetail":row.depDetail,
+						"depPid":0,
+						"depOrgid":nodeId
 					},
 					success:function(data){
 						$("#save").hide();
 						$("#cancle").hide();
-						editRow = undefined;
-						$("#tt").tree("reload");
 						datagrid.datagrid("reload",editRow);
-						datagrid.datagrid("unselectAll");
 					},
 					error:function(){
 						$("#save").show();
 						$("#cancle").show();
 					}
 				});
+				editRow = undefined;
+				datagrid.datagrid("unselectAll");
 			},
 		});
 	}
@@ -260,7 +220,7 @@ $(function(){
 
 				datagrid.datagrid('getData').rows[index] = todown;
 				datagrid.datagrid('getData').rows[index - 1] = toup;
-				exchange(toup.muId,todown.muId);
+				exchange(toup.depId,todown.depId);
 				datagrid.datagrid('refreshRow', index);
 				datagrid.datagrid('refreshRow', index - 1);
 				datagrid.datagrid('selectRow', index - 1);
@@ -272,7 +232,7 @@ $(function(){
 				var toup = datagrid.datagrid('getData').rows[index + 1];
 				datagrid.datagrid('getData').rows[index + 1] = todown;
 				datagrid.datagrid('getData').rows[index] = toup;
-				exchange(toup.muId,todown.muId);
+				exchange(toup.depId,todown.depId);
 				datagrid.datagrid('refreshRow', index);
 				datagrid.datagrid('refreshRow', index + 1);
 				datagrid.datagrid('selectRow', index + 1);
@@ -282,14 +242,15 @@ $(function(){
 
 	function exchange(position1,position2){
 		$.ajax({
-			url:'ExchangeMenuPosition',
+			url:'ExchangeDepPosition',
 			type:'post',
 			dataType: 'json',
 			data: {  
 				"id1" : position1,
-				"id2":position2,
+				"id2" : position2,
 			},
 			success:function(data){
+				console.log("exchange:"+data);
 			},
 			error:function(){
 				alert(data.message);
@@ -306,20 +267,19 @@ $(function(){
 			return;
 		}
 		//提醒用户是否是真的删除数据
-		$.messager.confirm("确认消息", "您确定要删除菜单【"+selectRows[0].muText+"】吗？", function (r) {
+		$.messager.confirm("确认消息", "您确定要删除部门【"+selectRows[0].depName+"】吗？", function (r) {
 			if (r) {
 				MaskUtil.mask();
 				$.ajax({
-					url: "DeleteMenuById",
+					url: "DeleteDepById",
 					type: "post",
 					dataType: "json",
-					data:{"id": selectRows[0].muId},
+					data:{"id": selectRows[0].depId},
 					success: function (data) {
 						MaskUtil.unmask();
 						if(data.code == 200){
 							datagrid.datagrid("reload");
 							datagrid.datagrid("clearSelections");
-							$("#tt").tree("reload");
 						}else{
 							$.messager.alert("删除提示", data.message);
 						}

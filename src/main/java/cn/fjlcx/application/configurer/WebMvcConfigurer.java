@@ -56,7 +56,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
         config.setSerializerFeatures(SerializerFeature.WriteMapNullValue,//保留空的字段
                 SerializerFeature.WriteNullStringAsEmpty,//String null -> ""
                 SerializerFeature.WriteNullNumberAsZero,//Number null -> 0
-                SerializerFeature.DisableCircularReferenceDetect);//禁止循环引用
+                SerializerFeature.DisableCircularReferenceDetect);//数据中禁止循环引用
         converter.setFastJsonConfig(config);
         converter.setDefaultCharset(Charset.forName("UTF-8"));
         converters.add(converter);
@@ -166,6 +166,8 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
         registry.addViewController("/menu/list").setViewName("/menu/list");
         registry.addViewController("/role/list").setViewName("/role/list");
         registry.addViewController("/user/list").setViewName("/user/list");
+        registry.addViewController("/organization/list").setViewName("/organization/list");
+        registry.addViewController("/department/list").setViewName("/department/list");
     }
 
     @Override

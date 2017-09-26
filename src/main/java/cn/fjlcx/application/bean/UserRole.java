@@ -14,10 +14,9 @@ public class UserRole {
     @Column(name = "ur_rid")
     private Integer urRid;
     
+    @Transient
     private Role urRole;
     
-
-
 	public Role getUrRole() {
 		return urRole;
 	}

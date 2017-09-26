@@ -14,27 +14,64 @@
 		<result column="us_registdate" jdbcType="TIMESTAMP" property="usRegistdate" />
 		<result column="us_lastlogindate" jdbcType="TIMESTAMP"
 			property="usLastlogindate" />
+		<association property="organization" column="us_orgid"
+			javaType="cn.fjlcx.application.bean.Organization" select="getOrg">
+		</association>
+		<association property="department" column="us_depid"
+			javaType="cn.fjlcx.application.bean.Department" select="getDep">
+		</association>
+	</resultMap>
+
+	<resultMap id="BaseOrgResultMap" type="cn.fjlcx.application.bean.Organization">
+		<id column="org_id" jdbcType="INTEGER" property="orgId" />
+		<result column="org_name" jdbcType="VARCHAR" property="orgName" />
+		<result column="org_code" jdbcType="VARCHAR" property="orgCode" />
+		<result column="org_pid" jdbcType="INTEGER" property="orgPid" />
+		<result column="org_detail" jdbcType="LONGVARCHAR" property="orgDetail" />
+		<result column="org_order" jdbcType="INTEGER" property="orgOrder" />
+	</resultMap>
+	
+	<resultMap id="BaseDepResultMap" type="cn.fjlcx.application.bean.Department">
+		<id column="dep_id" jdbcType="INTEGER" property="depId" />
+		<result column="dep_name" jdbcType="VARCHAR" property="depName" />
+		<result column="dep_pid" jdbcType="INTEGER" property="depPid" />
+		<result column="dep_order" jdbcType="INTEGER" property="depOrder" />
+		<result column="dep_detail" jdbcType="LONGVARCHAR" property="depDetail" />
+		<association property="organization" column="dep_orgid"
+			javaType="cn.fjlcx.application.bean.Organization" select="getOrg">
+		</association>
 	</resultMap>
 
 	<select id="selectUserWithRole" parameterType="String"
 		resultMap="BaseResultMap">
 		select * from oa_user WHERE us_loginname = #{username}
 	</select>
-	
+
 	<select id="selectUserByConditions" resultMap="BaseResultMap">
 		select
-		us_id,us_loginname,us_name,us_state
-		from oa_user
-		where 1 = 1 
+		us_id,us_loginname,us_name,us_state,us_orgid,us_depid
+		from
+		oa_user
+		where 1 = 1
 		<if test="name != null and name !=''">
-			 and us_name LIKE CONCAT(CONCAT('%',#{name}),'%')
+			and us_name LIKE CONCAT(CONCAT('%',#{name}),'%')
 		</if>
 		<if test="loginName != null and loginName !=''">
 			and us_loginname LIKE CONCAT(CONCAT('%',#{loginName}),'%')
 		</if>
 	</select>
-	
+
 	<select id="selectUserById" parameterType="int" resultMap="BaseResultMap">
 		SELECT * from oa_user where us_id = #{id}
+	</select>
+
+	<select id="getOrg" parameterType="int" resultMap="BaseOrgResultMap">
+		select * from
+		oa_organization where org_id = #{us_orgid}
+	</select>
+	
+	<select id="getDep" parameterType="int" resultMap="BaseDepResultMap">
+		select * from
+		oa_department where dep_id = #{dep_orgid}
 	</select>
 </mapper>

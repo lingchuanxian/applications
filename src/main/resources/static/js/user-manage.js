@@ -43,6 +43,26 @@ $(function(){
 				width:220,
 				align:'center',
 			},{
+				field:'organization',
+				title:"机构",
+				width:220,
+				align:'center',
+				formatter:function(val){  
+					if(val){  
+						return  val.orgName;  
+					}  
+				},  
+			},{
+				field:'department',
+				title:"部门",
+				width:220,
+				align:'center',
+				formatter:function(val){  
+					if(val){  
+						return  val.depName;  
+					}  
+				},  
+			},{
 				field:'usState',
 				title:"是否启用",
 				width:180,
@@ -60,7 +80,10 @@ $(function(){
 				text:'新增',
 				iconCls:'icon-user-add',
 				handler:function(){
+					loadCombotreeOfOrg();
+					loadCombotreeOfDep();
 					getRoleType($('#role-combox'));
+					$("#user-form").form("disableValidation");
 					$('#user-box').dialog("open");
 				}
 			},'-',{
@@ -105,14 +128,14 @@ $(function(){
 				$(".state-no").linkbutton({ text: '否', plain: true, iconCls: 'icon-stop' });
 			},
 			onSelect:function(rowIndex, rowData){  
-	             if(rowData.usState == 0){
-	            	 $("#stop").show();
-	            	 $("#start").hide();
-	             }else{
-	            	 $("#start").show();
-	            	 $("#stop").hide();
-	             }
-	        },
+				if(rowData.usState == 0){
+					$("#stop").show();
+					$("#start").hide();
+				}else{
+					$("#start").show();
+					$("#stop").hide();
+				}
+			},
 	});
 	//设置分页控件 
 	var p = datagrid.datagrid('getPager'); 
@@ -156,14 +179,14 @@ $(function(){
 	$("#btnSearch").click(function(){
 		doSearch();
 	});
-	
+
 	function doSearch(){
 		$('#user-tb').datagrid('load',{
 			name: $('#name').val(),
 			loginName: $('#loginName').val()
 		});
 	}
-	
+
 	$('#user-box').dialog({
 		title: '用户新增',
 		width: 800,
@@ -185,7 +208,7 @@ $(function(){
 			}
 		}]
 	});
-	
+
 	$('#user-detail-box').dialog({
 		title: '用户详情',
 		width: 800,
@@ -201,6 +224,43 @@ $(function(){
 			}
 		}]
 	});
+
+
+	function loadCombotreeOfOrg(){
+		$("#org-combox").combotree({  
+			method:"GET",
+			url:'../organization/selectOrganizationForSelect',  
+			editable:false,
+			loadFilter: function(data){
+				if (data.code == 200){
+					return data.data;
+				}else{
+					alert("1:"+data.message);
+				}
+			},
+			onLoadSuccess: function (node,data) { 
+				$("#org-combox").combotree('setValue', { id: data[0].id, text: data[0].text }); 
+			}
+		});  
+	}
+	
+	function loadCombotreeOfDep(){
+		$("#dep-combox").combotree({  
+			method:"GET",
+			url:'../department/selectDepForSelect',  
+			editable:false,
+			loadFilter: function(data){
+				if (data.code == 200){
+					return data.data;
+				}else{
+					alert("1:"+data.message);
+				}
+			},
+			onLoadSuccess: function (node,data) { 
+				$("#dep-combox").combotree('setValue', { id: data[0].id, text: data[0].text }); 
+			}
+		});  
+	}
 
 
 	function getRoleType(combobox){
@@ -225,7 +285,7 @@ $(function(){
 			}
 		});  
 	}
-	
+
 	function formAddSubmit(){
 		$('#user-form').form('submit', {
 			url:'AddUser',
@@ -239,7 +299,7 @@ $(function(){
 			}
 		});
 	}
-	
+
 	function showDetail(){
 		var selectRows =datagrid.treegrid("getSelections");
 		if (selectRows.length < 1) {
@@ -270,7 +330,7 @@ $(function(){
 			});
 		}
 	}
-	
+
 	function changeState(state){
 		var selectRows =datagrid.treegrid("getSelections");
 		var str = "";
@@ -301,6 +361,6 @@ $(function(){
 				});
 			}
 		});
-		
+
 	}
 });

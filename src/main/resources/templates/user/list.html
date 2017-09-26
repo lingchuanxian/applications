@@ -40,45 +40,53 @@
 			<table class="rb-add-user" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td class="td_key">用户名：</td>
-					<td class="td_val"><input class="easyui-validatebox"
+					<td class="td_val"><input class="easyui-textbox"
 						type="text" name="usName" data-options="required:true"
 						missingMessage="请填写用户名" /></td>
 					<td class="td_key">登陆账号：</td>
-					<td class="td_val"><input class="easyui-validatebox"
+					<td class="td_val"><input class="easyui-textbox"
 						type="text" name="usLoginname"
 						data-options="required:true,validType:'isExist'"
 						missingMessage="请填写登录帐号" /></td>
 				</tr>
 				<tr>
+					<td class="td_key">机构：</td>
+					<td class="td_val"><input class="easyui-combobox"
+						id="org-combox" style="width: 204px;" name="usRole" /></td>
+					<td class="td_key">部门：</td>
+					<td class="td_val"><input class="easyui-combobox"
+						id="dep-combox" style="width: 204px;" name="usRole" /></td>
+				</tr>
+				<tr>
 					<td class="td_key">密码：</td>
-					<td class="td_val"><input id="pwd" class="easyui-validatebox"
+					<td class="td_val"><input id="pwd" class="easyui-textbox"
 						type="password" name="usPwd"
 						data-options="required:true,validType:'minLength[6]'"
 						missingMessage="请填写登录密码" /></td>
 					<td class="td_key">重复密码：</td>
-					<td class="td_val"><input class="easyui-validatebox"
+					<td class="td_val"><input class="easyui-textbox"
 						type="password" name="reusPwd" data-options="required:true"
 						validType="equals['#pwd']" missingMessage="请再次填写登录密码" /></td>
 				</tr>
 				<tr>
 					<td class="td_key">角色：</td>
 					<td class="td_val"><input class="easyui-combobox"
-						id="role-combox" style="width: 170px;" name="usRole" /></td>
+						id="role-combox" style="width: 204px;" name="usRole" /></td>
 					<td class="td_key">性别：</td>
 					<td class="td_val"><select class="easyui-combobox"
-						style="width: 170px;" name="usSex" editable="false">
+						style="width: 204px;" name="usSex" editable="false">
 							<option value="0">男</option>
 							<option value="1">女</option>
 					</select></td>
 				</tr>
 				<tr>
 					<td class="td_key">手机号：</td>
-					<td class="td_val"><input class="easyui-validatebox"
+					<td class="td_val"><input class="easyui-textbox"
 						type="text" name="usPhone"
 						data-options="required:true,validType:'mobile'"
 						missingMessage="请填写手机号" /></td>
 					<td class="td_key">邮箱：</td>
-					<td class="td_val"><input class="easyui-validatebox"
+					<td class="td_val"><input class="easyui-textbox"
 						type="text" name="usMail"
 						data-options="required:true,validType:'email'"
 						missingMessage="请填写邮箱地址" /></td>
@@ -86,7 +94,7 @@
 				<tr>
 					<td class="td_key">联系地址：</td>
 					<td class="td_val" colspan="3"><input
-						class="easyui-validatebox" type="text" name="usAddress"
+						class="easyui-textbox" type="text" name="usAddress"
 						style="width: 560px;" /></td>
 				</tr>
 			</table>
