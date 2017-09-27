@@ -97,9 +97,10 @@ public class UserController {
 	
 	@GetMapping("GetUserListExpectRoleExist")
 	public Result GetUserListExpectRoleExist(int page,int rows,int rid) {
+		logger.info("page:"+page);
+		PageHelper.startPage(page, rows);//设置分页
 		List<UserRole> listUserRole = userRoleService.selectUserRoleByRoleId(rid);
 		List<User> list = mUserService.selectUserByConditions(null);
-		logger.info("size:"+list.size());
 		List<User> templist = new ArrayList<User>();
 		for(UserRole ur:listUserRole) {
 			for(User user : list) {
@@ -109,7 +110,6 @@ public class UserController {
 			}
 		}
 		list.removeAll(templist);
-		PageHelper.startPage(page, rows);//设置分页
 		PageInfo<User> pageData=new PageInfo<User>(list);
 		Map<String,Object> params = new HashMap<String, Object>();
 		params.put("total", pageData.getTotal());

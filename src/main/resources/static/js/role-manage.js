@@ -244,6 +244,7 @@ $(function(){
 			checkOnSelect : true,  
 			width:900,
 			height: 600,
+			rownumbers: true,
 			fitColumns:true,
 			pagination:true,//分页控件 
 			pageSize: 20,//每页显示的记录条数，默认为10 
@@ -343,15 +344,13 @@ $(function(){
 
 		user_select_datagrid = $("#user-select-tb").datagrid({
 			method:"GET",
-			url:"../user/GetUserListExpectRoleExist",
-			queryParams: {          
-				rid: id            
-			} ,
+			url:"../user/GetUserListExpectRoleExist?rid="+id,
 			idField:'usId',
 			fit:true,
 			checkOnSelect : true,  
 			width:900,
 			height: 600,
+			rownumbers: true,
 			fitColumns:true,
 			pagination:true,//分页控件 
 			pageSize: 20,//每页显示的记录条数，默认为10 
