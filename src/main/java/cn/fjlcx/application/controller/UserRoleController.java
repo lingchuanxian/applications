@@ -5,6 +5,9 @@ import cn.fjlcx.application.core.ResultGenerator;
 import cn.fjlcx.application.bean.User;
 import cn.fjlcx.application.bean.UserRole;
 import cn.fjlcx.application.service.UserRoleService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import com.github.pagehelper.PageHelper;
@@ -24,6 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/userRole")
 public class UserRoleController {
+	private static final Logger logger = LoggerFactory.getLogger(UserRoleController.class);
     @Resource
     private UserRoleService userRoleService;
     
@@ -40,16 +44,27 @@ public class UserRoleController {
     
     @PostMapping("AddUserToRole")
     public Result AddUserToRole(@RequestParam int rid,@RequestParam String uids) {
+    	logger.info("rid:"+rid+"--uids:"+uids);
     	String id[] = uids.split(",");
-    	List<UserRole> listUR = new ArrayList<>();
-    	for(int i = 0;i < id.length - 1; i++) {
+    	for(int i = 0;i < id.length; i++) {
     		UserRole ur = new UserRole();
     		ur.setUrUid(Integer.parseInt(id[i]));
     		ur.setUrRid(rid);
-    		listUR.add(ur);
+    		userRoleService.save(ur);
     	}
-    	userRoleService.save(listUR);
     	return ResultGenerator.genSuccessResult().setMessage("新增成功");
     }
 
+    @PostMapping("RemoveUserOfRole")
+    public Result RemoveUserOfRole(@RequestParam String ids) {
+    	userRoleService.deleteByIds(ids.substring(0, ids.length()-1));
+    	return ResultGenerator.genSuccessResult().setMessage("移除成功");
+    }
+    
+
+    @PostMapping("SelectUserRoleByUid")
+    public Result SelectUserRoleByUid(@RequestParam int id) {
+    	List<UserRole> listRole = userRoleService.selectUserRoleByUserId(id);
+    	return ResultGenerator.genSuccessResult(listRole);
+    }
 }

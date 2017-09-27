@@ -1,6 +1,7 @@
 package cn.fjlcx.application.controller;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +25,10 @@ import com.github.pagehelper.PageInfo;
 
 import cn.fjlcx.application.bean.SubmitPaging;
 import cn.fjlcx.application.bean.User;
+import cn.fjlcx.application.bean.UserRole;
 import cn.fjlcx.application.core.Result;
 import cn.fjlcx.application.core.ResultGenerator;
+import cn.fjlcx.application.service.UserRoleService;
 import cn.fjlcx.application.service.UserService;
 
 @RestController
@@ -32,6 +37,8 @@ public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Resource
 	UserService mUserService;
+	@Resource
+    private UserRoleService userRoleService;
 
 	@GetMapping("GetUserList")
 	public Result GetUserList(int page,int rows,String name,String loginName) {
@@ -50,6 +57,8 @@ public class UserController {
 	@PostMapping("AddUser")
 	public Result AddUser(@ModelAttribute User user) {
 		logger.info("user-form:"+user.toString());
+		SimpleHash sh = new SimpleHash("MD5",user.getUsPwd(), ByteSource.Util.bytes(user.getUsLoginname()),1024);
+		user.setUsPwd(sh.toString());
 		user.setUsRegistdate(new Date());
 		mUserService.save(user);
 		return ResultGenerator.genSuccessResult().setMessage("新增成功");
@@ -85,4 +94,27 @@ public class UserController {
 		User user = mUserService.selectUserById(id);
 		return ResultGenerator.genSuccessResult(user);
 	}
+	
+	@GetMapping("GetUserListExpectRoleExist")
+	public Result GetUserListExpectRoleExist(int page,int rows,int rid) {
+		List<UserRole> listUserRole = userRoleService.selectUserRoleByRoleId(rid);
+		List<User> list = mUserService.selectUserByConditions(null);
+		logger.info("size:"+list.size());
+		List<User> templist = new ArrayList<User>();
+		for(UserRole ur:listUserRole) {
+			for(User user : list) {
+				if(user.getUsId() == ur.getUrUser().getUsId()) {
+					templist.add(user);
+				}
+			}
+		}
+		list.removeAll(templist);
+		PageHelper.startPage(page, rows);//设置分页
+		PageInfo<User> pageData=new PageInfo<User>(list);
+		Map<String,Object> params = new HashMap<String, Object>();
+		params.put("total", pageData.getTotal());
+		params.put("rows", pageData.getList());
+		return ResultGenerator.genSuccessResult().setData(params);
+	}
+
 }

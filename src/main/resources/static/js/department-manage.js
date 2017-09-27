@@ -156,8 +156,8 @@ $(function(){
 				datagrid.datagrid("unselectAll");
 				if (data.total == 0) { 
 					//添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数 
-					$(this).datagrid('appendRow', { depId: '<div style="color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'depId', colspan: 3 }) 
-					} 
+					$(this).datagrid('appendRow', { depId: '<div style="color:red">暂无下属部门！</div>' }).datagrid('mergeCells', { index: 0, field: 'depId', colspan: 3 }) 
+				} 
 			},
 			onBeforeEdit:function(index,row){
 				$("#save").show();

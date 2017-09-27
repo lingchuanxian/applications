@@ -230,6 +230,7 @@ $(function(){
 				text:'关闭',
 				iconCls:'icon-cancel',
 				handler:function(){
+					user_datagrid.datagrid("clearSelections");
 					$('#role_menu').dialog("close");
 				}
 			}]
@@ -296,7 +297,7 @@ $(function(){
 				text:'移除',
 				iconCls:'icon-user-delete',
 				handler:function(){
-
+					RemoveRoleUser();
 				}
 			}],
 
@@ -304,11 +305,48 @@ $(function(){
 
 	}
 
+	function RemoveRoleUser(){
+		var selectRows =user_datagrid.treegrid("getSelections");
+		if (selectRows.length < 1) {
+			$.messager.alert("提示消息", "请选择要移除的用户!");
+			return;
+		}
+		var ids = '';
+		var names ='';
+		for(var i =0; i< selectRows.length;i++){  
+			ids += selectRows[i].urId+",";
+			names += selectRows[i].urUser.usName+",";
+		} 
+		
+		//提醒用户是否是真的删除数据
+		$.messager.confirm("确认消息", "您确定要移除用户【"+names.substr(0,names.length-1)+"】吗？", function (r) {
+			if (r) {
+				$.ajax({
+					url: "../userRole/RemoveUserOfRole",
+					type: "post",
+					dataType: "json",
+					data:{"ids":ids},
+					success: function (data) {
+						if(data.code == 200){
+							user_datagrid.datagrid("clearSelections");
+							user_datagrid.datagrid("reload");
+						}else{
+							$.messager.alert("删除提示", data.message);
+						}
+					}
+				});
+			}
+		});
+	}
+
 	function OpenSelectUserDialog(id){
 
 		user_select_datagrid = $("#user-select-tb").datagrid({
 			method:"GET",
-			url:"../user/GetUserList",
+			url:"../user/GetUserListExpectRoleExist",
+			queryParams: {          
+				rid: id            
+			} ,
 			idField:'usId',
 			fit:true,
 			checkOnSelect : true,  
@@ -320,6 +358,7 @@ $(function(){
 			pageList: [10,20,50,100],//可以设置每页记录条数的列表 
 			loadFilter: function(data){
 				if (data.code == 200){
+					console.log(data.data);
 					return data.data;
 				}else{
 					alert("1:"+data.message);
@@ -354,8 +393,6 @@ $(function(){
 				},  
 			}
 			]],
-			toolbar:'#tb'
-
 		});
 
 		$('#user_select').dialog({
@@ -392,7 +429,21 @@ $(function(){
 		for(var i =0; i< selectRows.length;i++){  
 			uids += selectRows[i].usId+",";
 		} 
-		alert(id);
+		$.ajax({
+			url: "../userRole/AddUserToRole",
+			type: "post",
+			dataType: "json",
+			data:{"rid": id,"uids":uids},
+			success: function (data) {
+				if(data.code == 200){
+					user_select_datagrid.datagrid("clearSelections");
+					$('#user_select').dialog("close");
+					user_datagrid.datagrid("reload");
+				}else{
+					$.messager.alert("删除提示", data.message);
+				}
+			}
+		});
 	}
 
 });

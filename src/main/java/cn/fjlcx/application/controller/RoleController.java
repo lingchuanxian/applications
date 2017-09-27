@@ -4,6 +4,8 @@ import cn.fjlcx.application.core.Result;
 import cn.fjlcx.application.core.ResultGenerator;
 import cn.fjlcx.application.bean.Role;
 import cn.fjlcx.application.service.RoleService;
+import cn.fjlcx.application.service.UserRoleService;
+
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -24,7 +26,9 @@ public class RoleController {
 	private static final Logger logger = LoggerFactory.getLogger(RoleController.class);
 	@Resource
 	private RoleService roleService;
-
+	@Resource
+	private UserRoleService userRoleService;
+	
 	@GetMapping("selectAllOfRole")
 	public Result selectAllOfRole() {
 		List<Role> roleList = roleService.selectAllOfRole();
@@ -45,6 +49,7 @@ public class RoleController {
 	@PostMapping("DeleteRoleById")
 	public Result DeleteRoleById(@RequestParam int id) {
 		roleService.deleteById(id);
+		userRoleService.deleteUserRoleByRoleId(id);
 		return ResultGenerator.genSuccessResult().setMessage("删除成功");
 	}
 

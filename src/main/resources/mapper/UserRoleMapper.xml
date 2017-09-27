@@ -35,4 +35,8 @@
 		select * from oa_user_role where ur_rid=#{id}
 	</select>
 
+	<delete id="deleteUserRoleByRoleId" parameterType="int">
+		delete from oa_user_role where ur_rid = #{id}
+	</delete>
+
 </mapper>

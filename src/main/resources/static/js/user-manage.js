@@ -92,6 +92,12 @@ $(function(){
 					showDetail();
 				}
 			},'-',{
+				text:'查看角色',
+				iconCls:'icon-lock-key',
+				handler:function(){
+					showRole(datagrid);
+				}
+			},'-',{
 				text:'编辑',
 				iconCls:'icon-user-edit',
 				handler:function(){
@@ -143,6 +149,143 @@ $(function(){
 		afterPageText: '页    共 {pages} 页', 
 		displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录', 
 	}); 
+
+	//查看角色
+	function showRole(datagrid) {
+		var selectRows =datagrid.datagrid("getSelections");
+		if (selectRows.length < 1) {
+			$.messager.alert("提示消息", "请选择要查看的用户!");
+			return;
+		}
+		showUserRoleDialog(selectRows[0].usId,selectRows[0].usName);
+	}
+
+	function showUserRoleDialog(id,name){
+		$("#user-role-tb").datagrid({
+			method:"POST",
+			url:"../userRole/SelectUserRoleByUid",
+			queryParams: {          
+				id: id            
+			} ,
+			idField:'urId',
+			fit:true,
+			checkOnSelect : true,  
+			width:700,
+			height: 500,
+			fitColumns:true,
+			loadFilter: function(data){
+				if (data.code == 200){
+					console.log(data.data);
+					return data.data;
+				}else{
+					alert("1:"+data.message);
+				}
+			},
+			columns:[[{
+				field : 'ck',
+				title:'编号',
+				checkbox : true,
+				align:'center',
+			},
+			{
+				field:'rlName',
+				title:"角色名",
+				width:20,
+				align:'center',
+				formatter:function(val,row,index){ 
+					if(row.urRole){
+						return row.urRole.rlName;
+					}
+				},  
+			},{
+				field:'rlCode',
+				title:"角色代码",
+				width:30,
+				align:'center',
+				formatter:function(val,row,index){ 
+					if(row.urRole){
+						return row.urRole.rlCode;
+					}
+				},  
+			},{
+				field:'rlDetail',
+				title:"角色描述",
+				width:30,
+				align:'center',
+				formatter:function(val,row,index){ 
+					if(row.urRole){
+						return row.urRole.rlDetail;
+					}
+				},  
+			}
+			]],
+			toolbar:[{
+				text:'移除角色',
+				iconCls:'icon-user-delete',
+				handler:function(){
+					RemoveRoleUser($("#user-role-tb"));
+				}
+			}],
+
+			onLoadSuccess: function(data){
+				if (data.total == 0) { 
+					//添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数 
+					$(this).datagrid('appendRow', { rlName: '<div style="color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'rlName', colspan: 2 }); 
+				} 
+			},
+		});
+
+		$('#user_role').dialog({
+			title: '用户【'+name+'】拥有的角色',
+			width: 615,
+			height: 580,
+			closed: false,
+			cache: false,
+			modal: true,
+			buttons:[{
+				text:'关闭',
+				iconCls:'icon-cancel',
+				handler:function(){
+					$('#user-role-tb').datagrid("clearSelections");
+					$('#user_role').dialog("close");
+				}
+			}]
+		});
+	}
+	
+	function RemoveRoleUser(datagrid){
+		var selectRows =datagrid.treegrid("getSelections");
+		if (selectRows.length < 1) {
+			$.messager.alert("提示消息", "请选择要移除的角色!");
+			return;
+		}
+		var ids = '';
+		var names ='';
+		for(var i =0; i< selectRows.length;i++){  
+			ids += selectRows[i].urId+",";
+			names += selectRows[i].urRole.rlName+",";
+		} 
+		
+		//提醒用户是否是真的删除数据
+		$.messager.confirm("确认消息", "您确定要移除角色【"+names.substr(0,names.length-1)+"】吗？", function (r) {
+			if (r) {
+				$.ajax({
+					url: "../userRole/RemoveUserOfRole",
+					type: "post",
+					dataType: "json",
+					data:{"ids":ids},
+					success: function (data) {
+						if(data.code == 200){
+							datagrid.datagrid("clearSelections");
+							datagrid.datagrid("reload");
+						}else{
+							$.messager.alert("删除提示", data.message);
+						}
+					}
+				});
+			}
+		});
+	}
 
 	//删除数据
 	function doDelete(datagrid) {
@@ -246,7 +389,7 @@ $(function(){
 			}
 		});  
 	}
-	
+
 	function loadCombotreeOfDep(id){
 		$("#dep-combox").combotree({  
 			method:"GET",
