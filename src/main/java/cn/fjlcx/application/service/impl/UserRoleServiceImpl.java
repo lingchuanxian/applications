@@ -26,4 +26,9 @@ public class UserRoleServiceImpl extends AbstractService<UserRole> implements Us
 		return oaUserRoleMapper.selectUserRoleByUserId(id);
 	}
 
+	@Override
+	public List<UserRole> selectUserRoleByRoleId(int id) {
+		return oaUserRoleMapper.selectUserRoleByRoleId(id);
+	}
+
 }

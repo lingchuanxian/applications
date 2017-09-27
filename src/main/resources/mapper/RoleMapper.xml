@@ -13,7 +13,7 @@
   </resultMap>
   
   <select id="selectAllOfRole" resultMap="BaseResultMap">
-  	select * from oa_role where rl_code not in (select rl_code from oa_role where rl_code='ADMIN') order by rl_order
+  	select * from oa_role order by rl_order
   </select>
   
   <select id="selectMaxOrder" resultType="int">

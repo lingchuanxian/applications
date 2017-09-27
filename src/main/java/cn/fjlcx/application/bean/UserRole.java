@@ -17,6 +17,17 @@ public class UserRole {
     @Transient
     private Role urRole;
     
+    @Transient
+    private User urUser;
+    
+	public User getUrUser() {
+		return urUser;
+	}
+
+	public void setUrUser(User urUser) {
+		this.urUser = urUser;
+	}
+
 	public Role getUrRole() {
 		return urRole;
 	}

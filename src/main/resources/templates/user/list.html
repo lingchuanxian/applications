@@ -48,10 +48,10 @@
 				<tr>
 					<td class="td_key">机构：</td>
 					<td class="td_val"><input class="easyui-combobox"
-						id="org-combox" style="width: 204px;" name="usRole" /></td>
+						id="org-combox" style="width: 204px;" name="usOrgid" /></td>
 					<td class="td_key">部门：</td>
 					<td class="td_val"><input class="easyui-combobox"
-						id="dep-combox" style="width: 204px;" name="usRole" /></td>
+						id="dep-combox" style="width: 204px;" name="usDepid" /></td>
 				</tr>
 				<tr>
 					<td class="td_key">密码：</td>
@@ -81,9 +81,17 @@
 					<td class="td_val"><input class="easyui-textbox" type="text"
 						name="usMail" data-options="required:true,validType:'email'"
 						missingMessage="请填写邮箱地址" /></td>
+					<td class="td_key">是否启用：</td>
+					<td class="td_val"><select class="easyui-combobox"
+						style="width: 204px;" name="usState" editable="false">
+							<option value="0">是</option>
+							<option value="1">否</option>
+					</select></td>
+				</tr>
+				<tr>
 					<td class="td_key">联系地址：</td>
-					<td class="td_val"><input class="easyui-textbox"
-						type="text" name="usAddress" /></td>
+					<td class="td_val" colspan="3"><input class="easyui-textbox"
+						type="text" name="usAddress" style="width:588px;"/></td>
 				</tr>
 			</table>
 		</form>
@@ -104,6 +112,12 @@
 				<td class="td_val phone"></td>
 			</tr>
 			<tr>
+				<td class="td_key">机构：</td>
+				<td class="td_val org"></td>
+				<td class="td_key">部门：</td>
+				<td class="td_val dep"></td>
+			</tr>
+			<tr>
 				<td class="td_key">联系地址：</td>
 				<td class="td_val address" colspan="3"></td>
 			</tr>
@@ -115,7 +129,9 @@
 			</tr>
 			<tr>
 				<td class="td_key">邮箱：</td>
-				<td class="td_val email" colspan="3"></td>
+				<td class="td_val email"></td>
+				<td class="td_key">是否启用：</td>
+				<td class="td_val state"></td>
 			</tr>
 		</table>
 	</div>

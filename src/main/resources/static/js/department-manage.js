@@ -30,9 +30,7 @@ $(function(){
 			url:"GetDepartmentByOrgId",
 			idField:'depId',
 			rownumbers: true,
-			fit:false,
 			striped: true, //行背景交换
-			fitColumns:true,
 			singleSelect:true,
 			queryParams: {          
 				id: nodeId            
@@ -48,18 +46,18 @@ $(function(){
 			{
 				field:'depId',
 				title:"部门编号",
-				width:10,
+				width:100,
 				align:'center',
 			},{
 				field:'depName',
 				title:"部门名称",
-				width:30,
+				width:300,
 				align:'center',
 				editor: { type: 'validatebox', options: { required: true} }
 			},{
 				field:'depDetail',
 				title:"部门描述",
-				width:40,
+				width:400,
 				align:'center',
 				editor: { 
 					type: 'validatebox',
@@ -154,8 +152,12 @@ $(function(){
 				$("#save").hide();
 				$("#cancle").hide();
 			},
-			onLoadSuccess: function(row){
+			onLoadSuccess: function(data){
 				datagrid.datagrid("unselectAll");
+				if (data.total == 0) { 
+					//添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数 
+					$(this).datagrid('appendRow', { depId: '<div style="color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'depId', colspan: 3 }) 
+					} 
 			},
 			onBeforeEdit:function(index,row){
 				$("#save").show();

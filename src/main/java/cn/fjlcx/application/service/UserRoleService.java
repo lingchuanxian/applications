@@ -10,4 +10,5 @@ import cn.fjlcx.application.core.Service;
  */
 public interface UserRoleService extends Service<UserRole> {
 	List<UserRole> selectUserRoleByUserId(int id);
+	List<UserRole> selectUserRoleByRoleId(int id);
 }

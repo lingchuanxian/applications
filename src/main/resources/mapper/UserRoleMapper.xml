@@ -4,6 +4,9 @@
 	<resultMap id="BaseResultMap" type="cn.fjlcx.application.bean.UserRole">
 		<id column="ur_id" jdbcType="INTEGER" property="urId" />
 		<result column="ur_uid" jdbcType="INTEGER" property="urUid" />
+		<association property="urUser" column="ur_uid"
+			javaType="cn.fjlcx.application.bean.User" select="cn.fjlcx.application.mapper.UserMapper.selectUserById">
+		</association>
 		<!-- <result column="ur_rid" jdbcType="INTEGER" property="urRid" /> -->
 		<association property="urRole" column="ur_rid"
 			javaType="cn.fjlcx.application.bean.Role" select="getRole">
@@ -26,6 +29,10 @@
 	<select id="getRole" parameterType="int" resultMap="BaseRoleResultMap">
 		select * from
 		oa_role where rl_id = #{ur_rid}
+	</select>
+	
+	<select id="selectUserRoleByRoleId" parameterType="int" resultMap="BaseResultMap">
+		select * from oa_user_role where ur_rid=#{id}
 	</select>
 
 </mapper>

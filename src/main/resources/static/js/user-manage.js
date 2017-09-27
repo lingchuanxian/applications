@@ -322,6 +322,9 @@ $(function(){
 						$(".sex").html(user.usSex==0 ? "男":"女");
 						$(".phone").html(user.usPhone);
 						$(".email").html(user.usMail);
+						$(".state").html(user.usState==0? "是":"否");
+						$(".org").html(user.organization.orgName);
+						$(".dep").html(user.department.depName);
 						$(".address").html(user.usAddress);
 						$(".addDate").html(jsonYearMonthDay(user.usRegistdate));
 						$(".loginDate").html(jsonTimeStamp(user.usLastlogindate));

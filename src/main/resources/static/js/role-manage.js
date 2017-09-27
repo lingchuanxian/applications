@@ -60,7 +60,7 @@ $(function(){
 		]],
 		toolbar:[{
 			text:'新增',
-			iconCls:'icon-image-add',
+			iconCls:'icon-lock-add',
 			handler:function(){
 				//添加时先判断是否有开启编辑的行，如果有则把开户编辑的那行结束编辑
 				if (editRow != undefined) {
@@ -84,7 +84,7 @@ $(function(){
 			}
 		},'-',{
 			text:'编辑',
-			iconCls:'icon-layout-edit',
+			iconCls:'icon-lock-edit',
 			handler:function(){
 				//修改时要获取选择到的行
 				var rows = datagrid.datagrid("getSelections");
@@ -128,22 +128,15 @@ $(function(){
 		}
 		},'-',{
 			text:'删除',
-			iconCls:'icon-layout-delete',
+			iconCls:'icon-lock-delete',
 			handler:function(){
 				doDelete(datagrid);
 			}
-		},{
-			text:'上移',
-			iconCls:'icon-arrow-up',
+		},'-',{
+			text:'成员管理',
+			iconCls:'icon-user-group',
 			handler:function(){
-				MoveUp(datagrid);
-			}
-		},
-		{
-			text:'下移',
-			iconCls:'icon-arrow-down',
-			handler:function(){
-				MoveDown(datagrid);
+				authorize();
 			}
 		}],
 		onBeforeLoad:function(){
@@ -181,7 +174,7 @@ $(function(){
 			});
 		},
 	});
-	
+
 	//删除数据
 	function doDelete(datagrid) {
 		var selectRows =datagrid.treegrid("getSelections");
@@ -211,4 +204,195 @@ $(function(){
 			}
 		});
 	}
+
+	var user_datagrid; 
+	var user_select_datagrid; 
+
+	function authorize(){
+		var selectRows =datagrid.treegrid("getSelections");
+		if (selectRows.length < 1) {
+			$.messager.alert("提示消息", "请选择要管理的角色!");
+			return;
+		}
+		openUserDialogAndLoadData(selectRows[0].rlId,selectRows[0].rlName);
+	}
+
+	function openUserDialogAndLoadData(id,name){
+
+		$('#role_menu').dialog({
+			title: "角色【"+name+'】成员管理',
+			width: 915,
+			height: 680,
+			closed: false,
+			cache: false,
+			modal: true,
+			buttons:[{
+				text:'关闭',
+				iconCls:'icon-cancel',
+				handler:function(){
+					$('#role_menu').dialog("close");
+				}
+			}]
+		});
+
+		user_datagrid = $("#role-user-tb").datagrid({
+			method:"GET",
+			url:"../userRole/SelectUserByRid?id="+id,
+			idField:'urId',
+			fit:true,
+			checkOnSelect : true,  
+			width:900,
+			height: 600,
+			fitColumns:true,
+			pagination:true,//分页控件 
+			pageSize: 20,//每页显示的记录条数，默认为10 
+			pageList: [10,20,50,100],//可以设置每页记录条数的列表 
+			loadFilter: function(data){
+				if (data.code == 200){
+					return data.data;
+				}else{
+					alert("1:"+data.message);
+				}
+			},
+			columns:[[{
+				field : 'ck',
+				title:'编号',
+				checkbox : true,
+				align:'center',
+			},
+			{
+				field:'usName',
+				title:"用户名",
+				width:20,
+				align:'center',
+				formatter:function(val,row,index){  
+					return row.urUser.usName;
+				},  
+			},{
+				field:'urOrg',
+				title:"机构",
+				width:30,
+				align:'center',
+				formatter:function(val,row,index){  
+					return row.urUser.organization.orgName;
+				},  
+			},{
+				field:'urDep',
+				title:"部门",
+				width:30,
+				align:'center',
+				formatter:function(val,row,index){  
+					return row.urUser.department.depName;
+				},  
+			}
+			]],
+			toolbar:[{
+				text:'新增',
+				iconCls:'icon-user-add',
+				handler:function(){
+					OpenSelectUserDialog(id);
+				}
+			},'-',{
+				text:'移除',
+				iconCls:'icon-user-delete',
+				handler:function(){
+
+				}
+			}],
+
+		});
+
+	}
+
+	function OpenSelectUserDialog(id){
+
+		user_select_datagrid = $("#user-select-tb").datagrid({
+			method:"GET",
+			url:"../user/GetUserList",
+			idField:'usId',
+			fit:true,
+			checkOnSelect : true,  
+			width:900,
+			height: 600,
+			fitColumns:true,
+			pagination:true,//分页控件 
+			pageSize: 20,//每页显示的记录条数，默认为10 
+			pageList: [10,20,50,100],//可以设置每页记录条数的列表 
+			loadFilter: function(data){
+				if (data.code == 200){
+					return data.data;
+				}else{
+					alert("1:"+data.message);
+				}
+			},
+			columns:[[{
+				field : 'ck',
+				title:'编号',
+				checkbox : true,
+				align:'center',
+			},
+			{
+				field:'usName',
+				title:"用户名",
+				width:20,
+				align:'center',
+			},{
+				field:'urOrg',
+				title:"机构",
+				width:30,
+				align:'center',
+				formatter:function(val,row,index){  
+					return row.organization.orgName;
+				},  
+			},{
+				field:'urDep',
+				title:"部门",
+				width:30,
+				align:'center',
+				formatter:function(val,row,index){  
+					return row.department.depName;
+				},  
+			}
+			]],
+			toolbar:'#tb'
+
+		});
+
+		$('#user_select').dialog({
+			title: '选择用户',
+			width: 815,
+			height: 680,
+			closed: false,
+			cache: false,
+			modal: true,
+			buttons:[{
+				text:'确定添加',
+				iconCls:'icon-ok',
+				handler:function(){
+					SubmitSelectedUser(id);
+				}
+			},{
+				text:'关闭',
+				iconCls:'icon-cancel',
+				handler:function(){
+					user_select_datagrid.datagrid("clearSelections");
+					$('#user_select').dialog("close");
+				}
+			}]
+		});
+	}
+
+	function SubmitSelectedUser(id){
+		var selectRows =user_select_datagrid.treegrid("getSelections");
+		if (selectRows.length < 1) {
+			$.messager.alert("提示消息", "请选择要新增的用户!");
+			return;
+		}
+		var uids = '';
+		for(var i =0; i< selectRows.length;i++){  
+			uids += selectRows[i].usId+",";
+		} 
+		alert(id);
+	}
+
 });

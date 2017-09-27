@@ -1,15 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8"/>
+<meta charset="UTF-8" />
 <title>数字办公系统</title>
 <link rel="stylesheet" id="easyuiTheme" type="text/css"
-	th:href="@{/easyui/themes/default/easyui.css}"/>
-<link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}"/>
-<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+	th:href="@{/easyui/themes/default/easyui.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
 </head>
 <body>
 	<table id="role-tb"></table>
+
+	<div id="role_menu" style="display: none;">
+		<div id="role-user-tb"></div>
+	</div>
+	<div id="user_select" style="display: none;">
+		<div id="user-select-tb"></div>
+	</div>
+	<div id="tb">
+		 机构：<select class="easyui-combobox"
+			style="width: 100px">
+			<option value="java">Java</option>
+			<option value="c">C</option>
+			<option value="basic">Basic</option>
+			<option value="perl">Perl</option>
+			<option value="python">Python</option>
+		</select> 
+		 部门：<select class="easyui-combobox"
+			style="width: 100px">
+			<option value="java">Java</option>
+			<option value="c">C</option>
+			<option value="basic">Basic</option>
+			<option value="perl">Perl</option>
+			<option value="python">Python</option>
+		</select> 
+	</div>
 </body>
 <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.cookie.js}"></script>

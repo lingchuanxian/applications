@@ -2953,7 +2953,7 @@ body{
   background: url('images/tree_icons.png') no-repeat -224px 0;
 }
 .tree-file {
-  background: url('images/tree_icons.png') no-repeat -240px 0;
+  background: url('images/tree_children.png') no-repeat 0 2px;
 }
 .tree-loading {
   background: url('images/loading.gif') no-repeat center center;
