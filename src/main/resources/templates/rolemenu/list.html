@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>数字办公系统</title>
+<link rel="stylesheet" id="easyuiTheme" type="text/css"
+	th:href="@{/easyui/themes/default/easyui.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+<body class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'west',split:true,title:'系统用户角色'"
+		style="width: 35%;">
+		<div class="easyui-panel" style="height: 100%;">
+			<table id="role-tb" class="easyui-datagrid"></table>
+		</div>
+	</div>
+	<div data-options="region:'center',fit:false,scroll:'no'">
+			<table id="menu-tt" class="easyui-treegrid"></table>
+	</div>
+</body>
+<script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.cookie.js}"></script>
+<script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+<script type="text/javascript" th:src="@{/easyui/easyui-lang-zh_CN.js}"></script>
+<script type="text/javascript" th:src="@{/easyui/validateExtend.js}"></script>
+<script type="text/javascript" th:src="@{/easyui/treegrid-dnd.js}"></script>
+<script type="text/javascript" th:src="@{/js/easyui-common.js}"></script>
+<script type="text/javascript" th:src="@{/js/loading.js}"></script>
+<script type="text/javascript" th:src="@{/easyui/treegridExtend.js}"></script>
+<script type="text/javascript" th:src="@{/js/rolemenu-manage.js}"></script>
+</html>

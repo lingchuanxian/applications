@@ -104,6 +104,12 @@ $(function(){
 
 				}
 			},'-',{
+				text:'重置密码',
+				iconCls:'icon-key-go',
+				handler:function(){
+					resetPassword();
+				}
+			},'-',{
 				text:'删除',
 				iconCls:'icon-user-delete',
 				handler:function(){
@@ -266,7 +272,7 @@ $(function(){
 			names += selectRows[i].urRole.rlName+",";
 		} 
 		
-		//提醒用户是否是真的删除数据
+		//提醒用户是否是真的移除
 		$.messager.confirm("确认消息", "您确定要移除角色【"+names.substr(0,names.length-1)+"】吗？", function (r) {
 			if (r) {
 				$.ajax({
@@ -280,6 +286,34 @@ $(function(){
 							datagrid.datagrid("reload");
 						}else{
 							$.messager.alert("删除提示", data.message);
+						}
+					}
+				});
+			}
+		});
+	}
+	
+	function resetPassword(){
+		var selectRows =datagrid.treegrid("getSelections");
+		if (selectRows.length < 1) {
+			$.messager.alert("提示消息", "请选择要重置密码的用户!");
+			return;
+		}
+		//提醒用户是否是真的删除数据
+		$.messager.confirm("确认消息", "您确定要重置用户【"+selectRows[0].usName+"】的密码吗？", function (r) {
+			if (r) {
+				MaskUtil.mask();
+				$.ajax({
+					url: "ResetUserPassword",
+					type: "post",
+					dataType: "json",
+					data:{"id": selectRows[0].usId},
+					success: function (data) {
+						MaskUtil.unmask();
+						console.log(data);
+						if(data.code == 200){
+						}else{
+							$.messager.alert("重置提示", data.message);
 						}
 					}
 				});

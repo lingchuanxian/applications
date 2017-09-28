@@ -30,6 +30,7 @@ import cn.fjlcx.application.core.Result;
 import cn.fjlcx.application.core.ResultGenerator;
 import cn.fjlcx.application.service.UserRoleService;
 import cn.fjlcx.application.service.UserService;
+import cn.fjlcx.application.utils.ListPageUtil;
 
 @RestController
 @RequestMapping("/user")
@@ -38,7 +39,7 @@ public class UserController {
 	@Resource
 	UserService mUserService;
 	@Resource
-    private UserRoleService userRoleService;
+	private UserRoleService userRoleService;
 
 	@GetMapping("GetUserList")
 	public Result GetUserList(int page,int rows,String name,String loginName) {
@@ -73,13 +74,13 @@ public class UserController {
 			return ResultGenerator.genSuccessResult(0);
 		}
 	}
-	
+
 	@PostMapping("DeleteUserById")
 	public Result DeleteUserById(@RequestParam int id) {
 		mUserService.deleteById(id);
 		return ResultGenerator.genSuccessResult().setMessage("删除成功");
 	}
-	
+
 	@PostMapping("UpdateUserState")
 	public Result DeleteUserById(@RequestParam int id,@RequestParam int state) {
 		User user = new User();
@@ -88,17 +89,16 @@ public class UserController {
 		mUserService.update(user);
 		return ResultGenerator.genSuccessResult().setMessage("修改成功");
 	}
-	
+
 	@PostMapping("SelectUserById")
 	public Result SelectUserById(@RequestParam int id) {
 		User user = mUserService.selectUserById(id);
 		return ResultGenerator.genSuccessResult(user);
 	}
-	
+
 	@GetMapping("GetUserListExpectRoleExist")
 	public Result GetUserListExpectRoleExist(int page,int rows,int rid) {
 		logger.info("page:"+page);
-		PageHelper.startPage(page, rows);//设置分页
 		List<UserRole> listUserRole = userRoleService.selectUserRoleByRoleId(rid);
 		List<User> list = mUserService.selectUserByConditions(null);
 		List<User> templist = new ArrayList<User>();
@@ -110,11 +110,22 @@ public class UserController {
 			}
 		}
 		list.removeAll(templist);
-		PageInfo<User> pageData=new PageInfo<User>(list);
+		ListPageUtil<User> listPageUtil =new ListPageUtil<User>(list,page, rows);
 		Map<String,Object> params = new HashMap<String, Object>();
-		params.put("total", pageData.getTotal());
-		params.put("rows", pageData.getList());
+		params.put("total", listPageUtil.getTotalCount());
+		params.put("rows", listPageUtil.getPagedList());
 		return ResultGenerator.genSuccessResult().setData(params);
+	}
+	
+	@PostMapping("ResetUserPassword")
+	public Result ResetUserPassword(@RequestParam int id) {
+		User user = new User();
+		user.setUsId(id);
+		User initUser = mUserService.selectUserById(id);
+		SimpleHash sh = new SimpleHash("MD5","123456", ByteSource.Util.bytes(initUser.getUsLoginname()),1024);
+		user.setUsPwd(sh.toString());
+		mUserService.update(user);
+		return ResultGenerator.genSuccessResult().setMessage("重置成功");
 	}
 
 }

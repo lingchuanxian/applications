@@ -26,9 +26,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-
 /**
- * Created by lcx on 2017/7/27.
+ *  @author ling_cx 
+ *  @date   2017/09/16.
  */
 public class ShiroRealm extends AuthorizingRealm {
 
@@ -56,7 +56,7 @@ public class ShiroRealm extends AuthorizingRealm {
 			logger.info("password:"+user.getUsPwd());
 			return new SimpleAuthenticationInfo(user.getUsLoginname(),user.getUsPwd(), ByteSource.Util.bytes(user.getUsLoginname()), getName());
 		}else{
-			throw new AccountException("帐号不正确！");
+			throw new AccountException("帐号不存在！");
 		}
 
 	}

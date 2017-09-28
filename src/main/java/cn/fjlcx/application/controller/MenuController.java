@@ -3,12 +3,19 @@ package cn.fjlcx.application.controller;
 import cn.fjlcx.application.core.Result;
 import cn.fjlcx.application.core.ResultGenerator;
 import cn.fjlcx.application.bean.Menu;
+import cn.fjlcx.application.bean.Role;
+import cn.fjlcx.application.bean.RoleMenu;
 import cn.fjlcx.application.bean.TreeJson;
+import cn.fjlcx.application.bean.User;
 import cn.fjlcx.application.service.MenuService;
+import cn.fjlcx.application.service.RoleMenuService;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -31,23 +38,44 @@ public class MenuController {
 
 	@Resource
 	private MenuService menuService;
+	@Resource
+	private RoleMenuService roleMenuService;
+
 	@PostMapping("GetMenuList")
 	public Result GetMenuList() {
-		List<TreeJson> tjs=new ArrayList<TreeJson>();  
-		List<Menu> menuList = menuService.selectAllOfMenu();
-		for (Menu menu : menuList) {  
-			TreeJson tj=new TreeJson();  
-			tj.setId(menu.getMuId());  
-			tj.setPid(menu.getMuPid());  
-			tj.setText(menu.getMuText());  
-			tj.setIconCls(menu.getMuIconcls());  
-			tj.setState(menu.getMuState());
-			tj.setUrl(menu.getMuUrl());
-			tj.setChecked(menu.getMuChecked());
-			tjs.add(tj);  
-		}  
-		logger.info("size:"+tjs.size());
-		return ResultGenerator.genSuccessResult(TreeJson.formatTree(tjs));
+		Subject currentUser = SecurityUtils.getSubject();
+		Session session = currentUser.getSession();
+		User user = (User)session.getAttribute("currentUser");
+		if(user == null) {
+			return ResultGenerator.genSuccessResult().setMessage("登录超时，请重新登录。");
+		}else {
+			List<Role> roles = user.getRoles();
+			if(roles == null) {
+				return ResultGenerator.genSuccessResult().setMessage("当前用户未分配角色。");
+			}else {
+				List<TreeJson> tjs=new ArrayList<TreeJson>();  
+				List<Menu> menuList = new ArrayList<>();
+				for(Role role : roles) {
+					List<RoleMenu> rolemenu = roleMenuService.selectMenuByRole(role.getRlId());
+					for(RoleMenu rm :rolemenu) {
+						Menu menu = menuService.selectMenuById(rm.getRmMid());
+						menuList.add(menu);
+					}
+				}
+				for (Menu menu : menuList) {  
+					TreeJson tj=new TreeJson();  
+					tj.setId(menu.getMuId());  
+					tj.setPid(menu.getMuPid());  
+					tj.setText(menu.getMuText());  
+					tj.setIconCls(menu.getMuIconcls());  
+					tj.setState(menu.getMuState());
+					tj.setUrl(menu.getMuUrl());
+					tj.setChecked(menu.getMuChecked());
+					tjs.add(tj);  
+				}  
+				return ResultGenerator.genSuccessResult(TreeJson.formatTree(tjs));
+			}
+		}
 	}
 
 	@PostMapping("MagageMenuList")
@@ -65,7 +93,6 @@ public class MenuController {
 			tj.setChecked(menu.getMuChecked());
 			tjs.add(tj);  
 		}  
-		logger.info("size:"+tjs.size());
 		List<TreeJson> treeList = new ArrayList<>();
 		TreeJson tree = new TreeJson();
 		tree.setText("主菜单");
@@ -99,8 +126,22 @@ public class MenuController {
 
 	@PostMapping("GetMenuParent")
 	public Result GetMenuParent(@RequestParam int id) {
-		List<Menu> listParentMenu = menuService.selectMenuByPid(id);
-		return ResultGenerator.genSuccessResult(listParentMenu);
+		Subject currentUser = SecurityUtils.getSubject();
+		Session session = currentUser.getSession();
+		User user = (User)session.getAttribute("currentUser");
+
+		List<Role> roles = user.getRoles();
+		List<Menu> menuList = new ArrayList<>();
+		for(Role role : roles) {
+			List<RoleMenu> rolemenu = roleMenuService.selectMenuByRole(role.getRlId());
+			for(RoleMenu rm :rolemenu) {
+				Menu menu = menuService.selectMenuById(rm.getRmMid());
+				if(menu.getMuPid() == id) {
+					menuList.add(menu);
+				}
+			}
+		}
+		return ResultGenerator.genSuccessResult(menuList);
 	}
 
 	@PostMapping("UpdateMenu")
@@ -144,7 +185,20 @@ public class MenuController {
 	@GetMapping("GetMainMenuChildren")
 	public Result GetMainMenuChildren(@RequestParam int id) {
 		List<TreeJson> tjs=new ArrayList<TreeJson>();  
-		List<Menu> menuList = menuService.selectAllOfMenu();
+		
+		Subject currentUser = SecurityUtils.getSubject();
+		Session session = currentUser.getSession();
+		User user = (User)session.getAttribute("currentUser");
+
+		List<Role> roles = user.getRoles();
+		List<Menu> menuList = new ArrayList<>();
+		for(Role role : roles) {
+			List<RoleMenu> rolemenu = roleMenuService.selectMenuByRole(role.getRlId());
+			for(RoleMenu rm :rolemenu) {
+				Menu menu = menuService.selectMenuById(rm.getRmMid());
+				menuList.add(menu);
+			}
+		}
 		for (Menu menu : menuList) {  
 			TreeJson tj=new TreeJson();  
 			tj.setId(menu.getMuId());  

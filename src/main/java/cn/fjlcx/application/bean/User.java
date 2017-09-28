@@ -1,6 +1,8 @@
 package cn.fjlcx.application.bean;
 
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Table(name = "oa_user")
@@ -63,7 +65,18 @@ public class User {
     @Transient
     private Department department;
     
-    public Department getDepartment() {
+    @Transient
+    private List<Role> roles;
+    
+    public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	public Department getDepartment() {
 		return department;
 	}
 
